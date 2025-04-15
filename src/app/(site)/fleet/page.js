@@ -37,7 +37,7 @@ export default function OurFleet() {
       </div>
 
       {/* Fleet Cards */}
-      <div className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto animate-jump-in">
+      <div className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto animate-jump-in">
         {fleetData.map((vehicle, index) => {
           const delayClass = `animate-fade-delay-${index + 1}`;
 

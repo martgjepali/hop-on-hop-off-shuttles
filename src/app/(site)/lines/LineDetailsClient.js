@@ -19,7 +19,7 @@ export default function LineDetailsClient({ line }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const isMobile = useMediaQuery("(max-width: 640px)");
-  const imageCount = isMobile ? 1 : 3;
+  const imageCount = 3;
 
   if (!line) {
     return (
@@ -53,6 +53,19 @@ export default function LineDetailsClient({ line }) {
       </div>
     );
   };
+
+  const getImageIndices = (lineName) => {
+    switch (lineName) {
+      case "Culture Line":
+        return [3, 4, 1];
+      case "Sea Line":
+        return [5, 4, 3];
+      default:
+        return [0, 1, 2]; // fallback if name doesn't match
+    }
+  };
+
+  const selectedImageIndices = getImageIndices(line.Name);
 
   const scheduleOptions = line.schedules.sort(
     (a, b) => new Date(a.StartDateTime) - new Date(b.StartDateTime)
@@ -99,19 +112,23 @@ export default function LineDetailsClient({ line }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {line.Images && line.Images.length > 0
-            ? line.Images.slice(0, imageCount).map((img, index) => (
-                <div key={index} className="relative w-full h-64">
-                  <Image
-                    src={`https://api.kmgshuttles.al/lines/uploads/${encodeURIComponent(
-                      img
-                    )}`}
-                    alt={`${line.Name} - ${index + 1}`}
-                    fill
-                    className="object-cover rounded-lg shadow-md"
-                  />
-                </div>
-              ))
-            : Array.from({ length: imageCount }).map((_, index) => (
+            ? selectedImageIndices.map((index) => {
+                const img = line.Images[index];
+                if (!img) return null; // skip if index is out of bounds
+                return (
+                  <div key={index} className="relative w-full h-64">
+                    <Image
+                      src={`https://api.kmgshuttles.al/lines/uploads/${encodeURIComponent(
+                        img
+                      )}`}
+                      alt={`${line.Name} - ${index + 1}`}
+                      fill
+                      className="object-cover rounded-lg shadow-md"
+                    />
+                  </div>
+                );
+              })
+            : Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="relative w-full h-64">
                   <Image
                     src="/default-line.jpg"
