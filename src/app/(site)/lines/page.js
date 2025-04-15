@@ -71,7 +71,7 @@ export default function LinesPage() {
             <LineCard
               key={line.LineID}
               title={line.Name}
-              itinerary={line.Itinerary}
+              itinerary={line.TripLabel}
               route={`${line.StartLocation} - ${line.EndLocation}`}
               index={index}
               images={

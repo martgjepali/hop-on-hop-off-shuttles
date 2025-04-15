@@ -2,12 +2,11 @@
 
 import { Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// import { Card } from "@/components/ui/card";
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <section className="relative isolate px-6 pt-5 sm:pt-10 lg:px-8 w-full max-w-4xl animate-fade-up">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-25">
+      <section className="relative isolate w-full max-w-4xl pt-5 sm:pt-10 animate-fade-up">
         {/* Background gradient */}
         <div
           className="absolute inset-0 -z-10 transform-gpu overflow-hidden blur-3xl"
@@ -31,7 +30,7 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div className="mx-auto max-w-md p-8 shadow-lg backdrop-blur-sm bg-white/80 rounded-xl">
+        <div className="mx-auto max-w-md p-8 shadow-lg backdrop-blur-sm bg-white/80 rounded-xl mb-12">
           <div className="flex flex-col space-y-8">
             <div className="flex items-center space-x-4">
               <div className="bg-amber-100 p-3 rounded-full">
@@ -68,6 +67,19 @@ export default function ContactPage() {
               </Button>
             </div>
           </div>
+        </div>
+
+        {/* Embedded Map */}
+        <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-16">
+          <iframe
+            src="https://www.google.com/maps?q=39.872805,20.014343&hl=en&z=15&output=embed"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </section>
     </div>

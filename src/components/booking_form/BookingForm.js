@@ -13,15 +13,14 @@ export default function ReservationPage() {
   const initialLineID = searchParams.get("LineID") || "0";
   const initialScheduleID = searchParams.get("ScheduleID") || "0";
   const initialBookingDateTime = searchParams.get("BookingDateTime") || "";
+  const initialEndDateTime = searchParams.get("EndDateTime") || "";
 
   const [formData, setFormData] = useState({
-    // We'll still store them in state so we can submit them,
-    // but we won't show them in the UI.
     LineType: initialLineName,
     LineID: parseInt(initialLineID),
     ScheduleID: parseInt(initialScheduleID),
     BookingDateTime: initialBookingDateTime,
-
+    EndDateTime: initialEndDateTime,
     // User-facing fields:
     FullName: "",
     Email: "",
@@ -252,14 +251,29 @@ export default function ReservationPage() {
             />
           </div>
 
+          {/* Scheduled Start Time */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Scheduled Time
+              Start Time
             </label>
             <input
               type="text"
               name="BookingDateTime"
               value={formatDateTime(formData.BookingDateTime)}
+              readOnly
+              className="w-full border rounded p-2 bg-gray-100"
+            />
+          </div>
+
+          {/* Scheduled End Time */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              End Time
+            </label>
+            <input
+              type="text"
+              name="EndDateTime"
+              value={formatDateTime(formData.EndDateTime)}
               readOnly
               className="w-full border rounded p-2 bg-gray-100"
             />

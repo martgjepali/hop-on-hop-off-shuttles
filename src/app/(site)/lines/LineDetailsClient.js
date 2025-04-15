@@ -4,7 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Modal from "@/components/modal/SeaLineModal";
+import TimeTable from "@/components/time_table/TimeTable";
 import useMediaQuery from "@/app/hooks/useMediaQuery";
+import { sunLineTable } from "@/constants/timeTableData";
 
 import {
   Listbox,
@@ -57,7 +59,7 @@ export default function LineDetailsClient({ line }) {
   const getImageIndices = (lineName) => {
     switch (lineName) {
       case "Culture Line":
-        return [3, 4, 1];
+        return [3, 4, 8];
       case "Sea Line":
         return [5, 4, 3];
       default:
@@ -77,6 +79,22 @@ export default function LineDetailsClient({ line }) {
     }
   };
 
+  const getEndDateFromLineName = (lineName, startDateTime) => {
+    const end = new Date(startDateTime);
+    if (lineName === "Culture Line") {
+      end.setHours(17, 30, 0, 0);
+    } else if (lineName === "Sea Line") {
+      end.setHours(16, 30, 0, 0);
+    } else {
+      end.setHours(17, 0, 0, 0);
+    }
+    return end;
+  };
+
+  const endDate = selectedSchedule
+    ? getEndDateFromLineName(line.Name, selectedSchedule.StartDateTime)
+    : new Date();
+
   const reservationUrl =
     "/reservation?" +
     new URLSearchParams({
@@ -86,6 +104,7 @@ export default function LineDetailsClient({ line }) {
         ? selectedSchedule.ScheduleID.toString()
         : "0",
       BookingDateTime: selectedSchedule ? selectedSchedule.StartDateTime : "",
+      EndDateTime: selectedSchedule ? endDate.toISOString() : "",
     }).toString();
 
   return (
@@ -109,6 +128,20 @@ export default function LineDetailsClient({ line }) {
             {line.Name} Details
           </h2>
         </div>
+
+        {line.Name !== "Sun Line" && (
+          <p
+            className={`italic text-sm sm:text-base mb-6 ${
+              line.Name === "Culture Line"
+                ? "text-[#F5A623]"
+                : line.Name === "Sea Line"
+                ? "text-green-800"
+                : "text-gray-600"
+            }`}
+          >
+            {line.ShortDescription}
+          </p>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {line.Images && line.Images.length > 0
@@ -140,6 +173,10 @@ export default function LineDetailsClient({ line }) {
               ))}
         </div>
 
+        {line.Name === "Sun Line" && (
+          <TimeTable timetable={sunLineTable} />
+        )}
+
         <div className="border-t border-gray-300">
           <dl className="divide-y divide-gray-300">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -153,32 +190,93 @@ export default function LineDetailsClient({ line }) {
             {renderSection("Not Included", line.NotIncluded)}
             {renderSection("FAQ", line.Faq)}
 
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium text-gray-900">Total Trip</dt>
-              <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 font-mono leading-relaxed space-y-2 whitespace-pre-wrap">
-                {line.TotalTrip.replace(/8h/, "8h")
-                  .replace(/STOP/g, "\nSTOP")
-                  .replace(/Trip/g, "\nTrip")
-                  .replace(/Start/g, "\nStart")
-                  .replace(/\. /g, ".\n")
-                  .replace(/(?=ALBANIAN RIVIERA:)/, "\n") // 👈 Insert newline before ALBANIAN RIVIERA:
-                  .split("\n")
-                  .map((sentence, index) => {
-                    const bolded = sentence.replace(
-                      /\b([A-ZÇËÄÖÜ]{2,}(?:\s+[A-ZÇËÄÖÜ]{2,})*)\b/g,
-                      "<strong>$1</strong>"
-                    );
+            {line.Name !== "Sun Line" && (
+              <>
+                {/* Itinerary */}
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium text-gray-900">
+                    Itinerary
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 font-mono leading-relaxed space-y-2 whitespace-pre-wrap">
+                    {line.Itinerary.replace(/STOP/g, "\nSTOP")
+                      .replace(/Trip/g, "\nTrip")
+                      .replace(/Start/g, "\nStart")
+                      .replace(/\. /g, ".\n")
+                      .split("\n")
+                      .filter(Boolean)
+                      .map((sentence, index) => {
+                        const trimmed = sentence.trim();
 
-                    return (
-                      <p
-                        key={index}
-                        dangerouslySetInnerHTML={{ __html: bolded.trim() }}
-                        className="mb-1"
-                      />
-                    );
-                  })}
-              </dd>
-            </div>
+                        if (/^STOP\s+\d+/i.test(trimmed)) {
+                          const match = trimmed.match(/^(STOP\s+\d+)(.*)$/i);
+                          if (match) {
+                            const [, boldPart, rest] = match;
+                            return (
+                              <p key={index} className="mb-1">
+                                <strong>{boldPart}</strong> {rest}
+                              </p>
+                            );
+                          }
+                        }
+
+                        const parts = sentence.split(/[:\-]/);
+                        const left = parts[0]?.trim();
+                        const right = parts.slice(1).join(": ").trim();
+
+                        return (
+                          <p key={index} className="mb-1">
+                            <strong>{left}:</strong> <span>{right}</span>
+                          </p>
+                        );
+                      })}
+                  </dd>
+                </div>
+
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium text-gray-900">
+                    Short Description
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 leading-relaxed">
+                    <div className="space-y-4">
+                      {line.ShortDescription.split(/(?<=[.?!])\s+/).map(
+                        (sentence, idx) => (
+                          <p key={idx}>{sentence.trim()}</p>
+                        )
+                      )}
+                    </div>
+                  </dd>
+                </div>
+
+                {/* Itinerary Description */}
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium text-gray-900">
+                    Itinerary Description
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 leading-relaxed">
+                    <div className="space-y-4">
+                      {line.ItineraryDescription.split(/(?<=[.?!])\s+/).map(
+                        (sentence, idx) => {
+                          const bolded = sentence.replace(
+                            /\b([A-ZÇËÄÖÜ]{2,}(?:\s+[A-ZÇËÄÖÜ]{2,})*)\b/g,
+                            "<strong>$1</strong>"
+                          );
+
+                          return (
+                            <p
+                              key={idx}
+                              dangerouslySetInnerHTML={{
+                                __html: bolded.trim(),
+                              }}
+                              className="mb-1"
+                            />
+                          );
+                        }
+                      )}
+                    </div>
+                  </dd>
+                </div>
+              </>
+            )}
 
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium text-gray-900">
@@ -195,59 +293,7 @@ export default function LineDetailsClient({ line }) {
               </dd>
             </div>
 
-            {line.Name === "Sun Line" ? (
-              <div className="mt-10 border border-gray-300 rounded-lg shadow p-6 bg-white">
-                <h3 className="text-2xl font-semibold text-center text-[#00537E] mb-4">
-                  UP TO DATE TIMETABLE
-                </h3>
-                <div className="overflow-x-auto mb-6">
-                  <table className="min-w-full border border-gray-300 text-center">
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th className="border border-gray-300 px-4 py-2">
-                          Saranda Start
-                        </th>
-                        <th className="border border-gray-300 px-4 py-2">
-                          Blue Eye Start
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="border border-gray-300 px-4 py-2">
-                          09:30
-                        </td>
-                        <td className="border border-gray-300 px-4 py-2">
-                          10:00
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border border-gray-300 px-4 py-2">
-                          11:00
-                        </td>
-                        <td className="border border-gray-300 px-4 py-2">
-                          12:00
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border border-gray-300 px-4 py-2">
-                          13:00
-                        </td>
-                        <td className="border border-gray-300 px-4 py-2">
-                          14:00
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border border-gray-300 px-4 py-2"></td>
-                        <td className="border border-gray-300 px-4 py-2">
-                          15:30
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            ) : (
+            {line.Name !== "Sun Line" && (
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
                   Select Your Schedule
@@ -264,9 +310,26 @@ export default function LineDetailsClient({ line }) {
                       <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
                         <span className="block truncate">
                           {selectedSchedule
-                            ? new Date(
-                                selectedSchedule.StartDateTime
-                              ).toLocaleString()
+                            ? (() => {
+                                const startDate = new Date(
+                                  selectedSchedule.StartDateTime
+                                );
+                                const endDate = getEndDateFromLineName(
+                                  line.Name,
+                                  selectedSchedule.StartDateTime
+                                );
+
+                                return `${startDate.toLocaleDateString()} ${startDate.toLocaleTimeString(
+                                  [],
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }
+                                )} - ${endDate.toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}`;
+                              })()
                             : "Select a schedule"}
                         </span>
                       </span>
@@ -275,11 +338,31 @@ export default function LineDetailsClient({ line }) {
                         className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                       />
                     </ListboxButton>
+
                     <ListboxOptions className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base ring-1 ring-black/5 shadow-lg focus:outline-none sm:text-sm">
                       {scheduleOptions.map((schedule) => {
-                        const formatted = new Date(
-                          schedule.StartDateTime
-                        ).toLocaleString();
+                        const startDate = new Date(schedule.StartDateTime);
+                        const endDate = new Date(schedule.StartDateTime);
+
+                        if (line.Name === "Culture Line") {
+                          endDate.setHours(17, 30, 0, 0);
+                        } else if (line.Name === "Sea Line") {
+                          endDate.setHours(16, 30, 0, 0);
+                        } else {
+                          endDate.setHours(17, 0, 0, 0);
+                        }
+
+                        const formatted = `${startDate.toLocaleDateString()} ${startDate.toLocaleTimeString(
+                          [],
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )} - ${endDate.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}`;
+
                         return (
                           <ListboxOption
                             key={schedule.ScheduleID}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Car, User, Binoculars } from "lucide-react";
+import { Home, Car, Contact, Binoculars, Timer } from "lucide-react";
 import { NavBar as TubelightNavBar } from "@/components/ui/tubelight-navbar";
 
 export function CustomNavBar() {
@@ -8,7 +8,8 @@ export function CustomNavBar() {
     { name: "Home", url: "/", icon: Home },
     { name: "Lines", url: "/lines", icon: Binoculars },
     { name: "Fleet", url: "/fleet", icon: Car },
-    { name: "Contact", url: "/contact", icon: User },
+    { name: "Schedules", url: "/time_table", icon: Timer },
+    { name: "Contact", url: "/contact", icon: Contact },
   ];
 
   return (
