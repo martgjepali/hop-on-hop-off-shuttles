@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { CustomNavBar } from "@/components/navbar/NavBar";
 import Footer from "@/components/footer/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton/WhatsAppButton";
+import { Toaster } from "react-hot-toast";
 
 import "../globals.css";
 
@@ -26,6 +27,8 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col`}
       >
+        <Toaster position="top-center" toastOptions={{ duration: 5000 }} />
+
         <CustomNavBar />
         {/* Main Content */}
         <main className="flex-grow">{children}</main>

@@ -18,14 +18,14 @@ export const timetableData = [
   },
   {
     line: "Sea Line",
-    route: "Saranda → Various Destinations",
+    route: "Sarande – Porto Palermo Castle – Qeparo Village – Borsh FREE Beach Day - Sarande",
     table: [
       { Frequency: "Every Day", "Start Time": "08:30", "End Time": "16:30" },
     ],
   },
   {
     line: "Culture Line",
-    route: "Saranda → Various Cultural Spots",
+    route: "Sarande-Blue Eye-Gjirokaster- Lekures Castle - Sarande",
     table: [
       { Frequency: "Every Day", "Start Time": "09:30", "End Time": "17:30" },
     ],

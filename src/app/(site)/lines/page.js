@@ -51,7 +51,7 @@ export default function LinesPage() {
   }
 
   return (
-    <main className="min-h-screen py-25">
+    <main className="min-h-screen py-10 sm:py-35">
       <div
         className="absolute inset-0 -z-10 transform-gpu overflow-hidden blur-3xl"
         aria-hidden="true"

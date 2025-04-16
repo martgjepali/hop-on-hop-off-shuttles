@@ -29,13 +29,11 @@ export default function LineCard({
 
   return (
     <div
-      className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow opacity-0 animate-fade-up transform hover:scale-[1.02]"
+      className="group bg-white hover:bg-[#F5A623] rounded-2xl border border-transparent hover:border-[#00537E] shadow-md hover:shadow-2xl overflow-hidden transition-all duration-300 opacity-0 animate-fade-up transform hover:scale-[1.02]"
       style={{ animationDelay: delay }}
     >
       {/* Card Image Carousel */}
       <div className="relative w-full h-75">
-        {" "}
-        {/* Increased height from h-48 to h-72 */}
         {images && images.length > 0 ? (
           <Image
             src={images[currentImageIndex]}
@@ -55,9 +53,10 @@ export default function LineCard({
 
       {/* Card Content */}
       <div className="px-6 py-4">
-        {" "}
-        {/* Increased padding */}
-        <div className="font-bold text-xl text-[#F5A623] mb-2">{title}</div>
+        <div className="font-bold text-xl text-[#F5A623] group-hover:text-[#00537E] transition-colors duration-300 mb-2">
+          {title}
+        </div>
+
         <div className="text-gray-500 text-base mb-6">
           {itinerary
             .split(".")
@@ -65,10 +64,10 @@ export default function LineCard({
               sentence.trim() ? <p key={index}>{sentence.trim()}.</p> : null
             )}
         </div>
-        {/* Bigger font and spacing */}
+
         <Link
           href={linkHref || "#"}
-          className="inline-block px-6 py-3 text-md font-semibold text-white bg-[#00537E] rounded-lg hover:bg-[#F5A623] transition"
+          className="inline-block px-6 py-3 text-md font-semibold text-white bg-[#00537E] rounded-lg hover:bg-[#00436A] transition"
         >
           View Details
         </Link>

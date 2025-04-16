@@ -20,8 +20,6 @@ import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 export default function LineDetailsClient({ line }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
-  const isMobile = useMediaQuery("(max-width: 640px)");
-  const imageCount = 3;
 
   if (!line) {
     return (

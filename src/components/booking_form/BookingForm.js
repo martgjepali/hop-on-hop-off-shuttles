@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createBooking } from "@/services/bookingService";
+import toast from "react-hot-toast";
 
 export default function ReservationPage() {
   const searchParams = useSearchParams();
@@ -101,9 +102,19 @@ export default function ReservationPage() {
       };
 
       const result = await createBooking(bookingPayload);
-      console.log("Booking created:", result);
 
-      // For example, redirect to a "thank you" page
+      if (!result.ok) {
+        const errData = await result.json();
+        if (errData?.detail === "Not enough capacity on this schedule.") {
+          toast.error(
+            "🚫 This trip is fully booked. Please select another schedule."
+          );
+        } else {
+          toast.error(errData?.detail || "Booking failed. Please try again.");
+        }
+        return;
+      }
+
       router.push("/thank_you");
     } catch (err) {
       console.error("Error creating booking:", err);
