@@ -101,16 +101,15 @@ export default function ReservationPage() {
         ScheduleID: Number(formData.ScheduleID),
       };
 
-      const result = await createBooking(bookingPayload);
+      const { ok, data } = await createBooking(bookingPayload);
 
-      if (!result.ok) {
-        const errData = await result.json();
-        if (errData?.detail === "Not enough capacity on this schedule.") {
+      if (!ok) {
+        if (data.detail === "Not enough capacity on this schedule.") {
           toast.error(
             "🚫 This trip is fully booked. Please select another schedule."
           );
         } else {
-          toast.error(errData?.detail || "Booking failed. Please try again.");
+          toast.error(data.detail || "Booking failed. Please try again.");
         }
         return;
       }

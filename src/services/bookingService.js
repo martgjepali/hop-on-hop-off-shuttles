@@ -22,12 +22,12 @@ export async function getBookingById(bookingId) {
  * @throws {Error} - If the fetch fails.
  */
 export async function getAllBookings() {
-    const response = await fetch(`${BASE_URL}/bookings/`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch all bookings');
-    }
-    return await response.json();
+  const response = await fetch(`${BASE_URL}/bookings/`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch all bookings");
   }
+  return await response.json();
+}
 
 /**
  * Updates the booking status for a given booking ID.
@@ -38,19 +38,23 @@ export async function getAllBookings() {
  * @throws {Error} - If the update fails.
  */
 export async function updateBookingStatus(bookingId, newStatus) {
-  const response = await fetch(`${BASE_URL}/bookings/${bookingId}/status?new_status=${encodeURIComponent(newStatus)}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
+  const response = await fetch(
+    `${BASE_URL}/bookings/${bookingId}/status?new_status=${encodeURIComponent(
+      newStatus
+    )}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // No body is needed if the parameter is in the query string.
     }
-    // No body is needed if the parameter is in the query string.
-  });
+  );
   if (!response.ok) {
     throw new Error(`Failed to update booking status for booking ${bookingId}`);
   }
   return await response.json();
 }
-
 
 /**
  * Creates a new booking.
@@ -60,18 +64,17 @@ export async function updateBookingStatus(bookingId, newStatus) {
  * @throws {Error} - If the creation fails.
  */
 export async function createBooking(bookingData) {
-    const response = await fetch(`${BASE_URL}/bookings/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(bookingData)
-    });
-    if (!response.ok) {
-      throw new Error('Failed to create booking');
-    }
-    return await response.json();
-  }
+  const response = await fetch(`${BASE_URL}/bookings/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bookingData),
+  });
+
+  const data = await response.json(); // always try to parse the response
+  return { ok: response.ok, data };
+}
 
 /**
  * Deletes multiple bookings.
@@ -82,17 +85,17 @@ export async function createBooking(bookingData) {
  */
 export async function deleteBookings(bookingIds) {
   const response = await fetch(`${BASE_URL}/bookings`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ booking_ids: bookingIds })
+    body: JSON.stringify({ booking_ids: bookingIds }),
   });
 
   if (!response.ok) {
     // Attempt to read error details from the response body
     const errorData = await response.json();
-    throw new Error(errorData.detail || 'Failed to delete bookings');
+    throw new Error(errorData.detail || "Failed to delete bookings");
   }
 
   return await response.json();
