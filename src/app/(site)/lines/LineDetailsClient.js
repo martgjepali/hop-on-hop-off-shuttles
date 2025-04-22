@@ -171,9 +171,7 @@ export default function LineDetailsClient({ line }) {
               ))}
         </div>
 
-        {line.Name === "Sun Line" && (
-          <TimeTable timetable={sunLineTable} />
-        )}
+        {line.Name === "Sun Line" && <TimeTable timetable={sunLineTable} />}
 
         <div className="border-t border-gray-300">
           <dl className="divide-y divide-gray-300">
@@ -181,6 +179,15 @@ export default function LineDetailsClient({ line }) {
               <dt className="text-sm font-medium text-gray-900">Price</dt>
               <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
                 Leke {line.Price}
+              </dd>
+            </div>
+
+            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt className="text-sm font-medium text-gray-900">
+                Start Location
+              </dt>
+              <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+                {line.StartLocation}
               </dd>
             </div>
 
@@ -205,6 +212,7 @@ export default function LineDetailsClient({ line }) {
                       .map((sentence, index) => {
                         const trimmed = sentence.trim();
 
+                        // Handle STOP lines (e.g., STOP 1)
                         if (/^STOP\s+\d+/i.test(trimmed)) {
                           const match = trimmed.match(/^(STOP\s+\d+)(.*)$/i);
                           if (match) {
@@ -217,13 +225,30 @@ export default function LineDetailsClient({ line }) {
                           }
                         }
 
-                        const parts = sentence.split(/[:\-]/);
+                        // Handle Trip lines with destinations
+                        if (/^Trip\s+/i.test(trimmed)) {
+                          const match = trimmed.match(
+                            /^Trip\s+(.+?)\s*[-:]\s*(.+)$/i
+                          );
+                          if (match) {
+                            const [, location, timeInfo] = match;
+                            return (
+                              <p key={index} className="mb-1">
+                                <strong>Trip {location}</strong> -{" "}
+                                <strong>{timeInfo}</strong>
+                              </p>
+                            );
+                          }
+                        }
+
+                        // Handle generic "X: Y" or "X - Y"
+                        const parts = trimmed.split(/[:\-]/);
                         const left = parts[0]?.trim();
-                        const right = parts.slice(1).join(": ").trim();
+                        const right = parts.slice(1).join("- ").trim();
 
                         return (
                           <p key={index} className="mb-1">
-                            <strong>{left}:</strong> <span>{right}</span>
+                            <strong>{left}</strong> - <span>{right}</span>
                           </p>
                         );
                       })}
