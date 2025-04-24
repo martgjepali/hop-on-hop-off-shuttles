@@ -59,7 +59,7 @@ export default function LineDetailsClient({ line }) {
       case "Culture Line":
         return [3, 4, 8];
       case "Sea Line":
-        return [5, 4, 3];
+        return [3, 1, 2];
       default:
         return [0, 1, 2]; // fallback if name doesn't match
     }
@@ -130,7 +130,7 @@ export default function LineDetailsClient({ line }) {
         {line.Name !== "Sun Line" && (
           <p
             className={`italic text-sm sm:text-base mb-6 ${
-              line.Name === "Culture Line"
+              line.Name === "Culture LIne"
                 ? "text-[#F5A623]"
                 : line.Name === "Sea Line"
                 ? "text-green-800"
@@ -204,6 +204,12 @@ export default function LineDetailsClient({ line }) {
                   </dt>
                   <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 font-mono leading-relaxed space-y-2 whitespace-pre-wrap">
                     {line.Itinerary.replace(/STOP/g, "\nSTOP")
+                      .replace(/~~/g, "~") // Normalize tildes
+                      .replace(/–/g, "-") // Convert en dash to normal dash
+                      .replace(/::/g, ":") // Remove double colons
+                      .replace(/(\d)(hour|hours|h)/gi, "$1 hour") // Add space before hour
+                      .replace(/(\d)(min|minutes)/gi, "$1 minutes") // Add space before minutes
+                      .replace(/STOP/g, "\nSTOP")
                       .replace(/Trip/g, "\nTrip")
                       .replace(/Start/g, "\nStart")
                       .replace(/\. /g, ".\n")
@@ -212,43 +218,65 @@ export default function LineDetailsClient({ line }) {
                       .map((sentence, index) => {
                         const trimmed = sentence.trim();
 
-                        // Handle STOP lines (e.g., STOP 1)
-                        if (/^STOP\s+\d+/i.test(trimmed)) {
-                          const match = trimmed.match(/^(STOP\s+\d+)(.*)$/i);
-                          if (match) {
-                            const [, boldPart, rest] = match;
-                            return (
-                              <p key={index} className="mb-1">
-                                <strong>{boldPart}</strong> {rest}
-                              </p>
-                            );
-                          }
-                        }
-
-                        // Handle Trip lines with destinations
-                        if (/^Trip\s+/i.test(trimmed)) {
-                          const match = trimmed.match(
-                            /^Trip\s+(.+?)\s*[-:]\s*(.+)$/i
+                        // Helper: split label from time/duration
+                        // Better time splitter that works with or without "~"
+                        const splitTime = (text) => {
+                          const match = text.match(
+                            /(.*?)([:\-]\s*(~{0,2}\s*\d+[\.\d]*\s*(hour|hours|h|minutes|min)))/i
                           );
                           if (match) {
-                            const [, location, timeInfo] = match;
+                            const label = match[1].trim();
+                            const time = match[2]
+                              .replace(/^[:\-]\s*/, "")
+                              .trim(); // Remove ": " or "- "
+                            return { label, time };
+                          }
+                          return { label: text, time: "" };
+                        };
+
+                        // START line special case
+                        if (/^Start\s+/i.test(trimmed)) {
+                          const match = trimmed.match(
+                            /^(Start\s+\w+)\s*[:\-]\s*(.+)$/i
+                          );
+                          if (match) {
+                            const [, label, time] = match;
                             return (
                               <p key={index} className="mb-1">
-                                <strong>Trip {location}</strong> -{" "}
-                                <strong>{timeInfo}</strong>
+                                <strong>{label}</strong>: {time}
                               </p>
                             );
                           }
                         }
 
-                        // Handle generic "X: Y" or "X - Y"
-                        const parts = trimmed.split(/[:\-]/);
-                        const left = parts[0]?.trim();
-                        const right = parts.slice(1).join("- ").trim();
+                        // STOP lines like "STOP 1 ViewPoint..."
+                        if (/^STOP\s+\d+/i.test(trimmed)) {
+                          const { label, time } = splitTime(trimmed);
+                          return (
+                            <p key={index} className="mb-1">
+                              <strong>{label}</strong>
+                              {time && `: ${time}`}
+                            </p>
+                          );
+                        }
 
+                        // TRIP lines like "Trip Himare - Porto Palermo Castle: ~20 minutes"
+                        if (/^Trip\s+/i.test(trimmed)) {
+                          const { label, time } = splitTime(trimmed);
+                          return (
+                            <p key={index} className="mb-1">
+                              <strong>{label}</strong>
+                              {time && `: ${time}`}
+                            </p>
+                          );
+                        }
+
+                        // Generic fallback for other lines like "Something: ~1 hour"
+                        const { label, time } = splitTime(trimmed);
                         return (
                           <p key={index} className="mb-1">
-                            <strong>{left}</strong> - <span>{right}</span>
+                            <strong>{label}</strong>
+                            {time && `: ${time}`}
                           </p>
                         );
                       })}
@@ -300,7 +328,7 @@ export default function LineDetailsClient({ line }) {
                 </div>
               </>
             )}
-
+            {/* 
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium text-gray-900">
                 Line Description
@@ -314,7 +342,7 @@ export default function LineDetailsClient({ line }) {
                   )}
                 </div>
               </dd>
-            </div>
+            </div> */}
 
             {line.Name !== "Sun Line" && (
               <div>

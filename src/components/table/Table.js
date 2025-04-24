@@ -127,7 +127,6 @@ const Table = ({ data, onAccept, onDecline, onBookingsDeleted }) => {
               <th className="px-4 py-2 font-semibold">Full Name</th>
               <th className="px-4 py-2 font-semibold">Email</th>
               <th className="px-4 py-2 font-semibold">Age</th>
-              <th className="px-4 py-2 font-semibold">Nationality</th>
               <th className="px-4 py-2 font-semibold">Phone Number</th>
               <th className="px-4 py-2 font-semibold">Number of People</th>
               <th className="px-4 py-2 font-semibold">Status</th>
@@ -161,7 +160,6 @@ const Table = ({ data, onAccept, onDecline, onBookingsDeleted }) => {
                 <td className="px-4 py-2">{booking.FullName}</td>
                 <td className="px-4 py-2">{booking.Email}</td>
                 <td className="px-4 py-2">{booking.Age}</td>
-                <td className="px-4 py-2">{booking.Nationality}</td>
                 <td className="px-4 py-2">{booking.PhoneNumber}</td>
                 <td className="px-4 py-2">{booking.NumberOfPeople}</td>
                 <td className="px-4 py-2">{booking.Status}</td>
@@ -184,18 +182,7 @@ const Table = ({ data, onAccept, onDecline, onBookingsDeleted }) => {
                             <strong>Name:</strong> {companion.FullName}
                           </p>
                           <p>
-                            <strong>Email:</strong> {companion.Email}
-                          </p>
-                          <p>
                             <strong>Age:</strong> {companion.Age}
-                          </p>
-                          <p>
-                            <strong>Nationality:</strong>{" "}
-                            {companion.Nationality}
-                          </p>
-                          <p>
-                            <strong>Phone Number:</strong>{" "}
-                            {companion.PhoneNumber}
                           </p>
                         </li>
                       ))}

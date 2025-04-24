@@ -50,11 +50,11 @@ export default function AdminDashboard() {
     }
   };
 
-  const seaLineBookings = bookings.filter(
-    (booking) => booking.LineType === "Sea Line"
+  const seaLineBookings = bookings.filter((booking) =>
+    booking.LineType.toLowerCase().includes("sea")
   );
-  const cultureLineBookings = bookings.filter(
-    (booking) => booking.LineType === "Culture Line"
+  const cultureLineBookings = bookings.filter((booking) =>
+    booking.LineType.toLowerCase().includes("culture")
   );
 
   const handleBookingsDeleted = (deletedIds) => {

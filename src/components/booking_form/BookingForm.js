@@ -26,7 +26,6 @@ export default function ReservationPage() {
     FullName: "",
     Email: "",
     Age: 0,
-    Nationality: "",
     PhoneNumber: "",
     NumberOfPeople: 1,
 
@@ -69,10 +68,8 @@ export default function ReservationPage() {
         ...prev.companions,
         {
           FullName: "",
-          Email: "",
           Age: 0,
-          Nationality: "",
-          PhoneNumber: "",
+
         },
       ],
     }));
@@ -229,22 +226,6 @@ export default function ReservationPage() {
             />
           </div>
 
-          {/* Nationality */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Nationality
-            </label>
-            <input
-              type="text"
-              name="Nationality"
-              value={formData.Nationality}
-              onChange={handleChange}
-              placeholder="Your nationality"
-              className="w-full border rounded p-2"
-              required
-            />
-          </div>
-
           {/* PhoneNumber */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -329,21 +310,6 @@ export default function ReservationPage() {
                     />
                   </div>
 
-                  {/* Companion Email */}
-                  <div className="mb-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="Email"
-                      value={comp.Email}
-                      onChange={(e) => handleCompanionChange(index, e)}
-                      className="w-full border rounded p-2"
-                      required
-                    />
-                  </div>
-
                   {/* Companion Age */}
                   <div className="mb-2">
                     <label className="block text-sm font-medium text-gray-700">
@@ -353,36 +319,6 @@ export default function ReservationPage() {
                       type="number"
                       name="Age"
                       value={comp.Age}
-                      onChange={(e) => handleCompanionChange(index, e)}
-                      className="w-full border rounded p-2"
-                      required
-                    />
-                  </div>
-
-                  {/* Companion Nationality */}
-                  <div className="mb-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Nationality
-                    </label>
-                    <input
-                      type="text"
-                      name="Nationality"
-                      value={comp.Nationality}
-                      onChange={(e) => handleCompanionChange(index, e)}
-                      className="w-full border rounded p-2"
-                      required
-                    />
-                  </div>
-
-                  {/* Companion PhoneNumber */}
-                  <div className="mb-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Phone Number
-                    </label>
-                    <input
-                      type="text"
-                      name="PhoneNumber"
-                      value={comp.PhoneNumber}
                       onChange={(e) => handleCompanionChange(index, e)}
                       className="w-full border rounded p-2"
                       required
