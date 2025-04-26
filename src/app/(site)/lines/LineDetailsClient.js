@@ -187,7 +187,7 @@ export default function LineDetailsClient({ line }) {
                 Start Location
               </dt>
               <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                {line.StartLocation}
+                <Link href={line.StartLocation} target="_blank">{line.StartLocation}</Link>
               </dd>
             </div>
 
