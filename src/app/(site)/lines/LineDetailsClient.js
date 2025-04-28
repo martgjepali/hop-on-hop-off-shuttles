@@ -187,7 +187,9 @@ export default function LineDetailsClient({ line }) {
                 Start Location
               </dt>
               <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                <Link href={line.StartLocation} target="_blank">{line.StartLocation}</Link>
+                <Link href={line.StartLocation} target="_blank">
+                  {line.StartLocation}
+                </Link>
               </dd>
             </div>
 
@@ -328,21 +330,22 @@ export default function LineDetailsClient({ line }) {
                 </div>
               </>
             )}
-            {/* 
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium text-gray-900">
-                Line Description
-              </dt>
-              <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 leading-relaxed">
-                <div className="space-y-4">
-                  {line.Description.split(/(?<=[.?!])\s+/).map(
-                    (sentence, idx) => (
-                      <p key={idx}>{sentence.trim()}</p>
-                    )
-                  )}
-                </div>
-              </dd>
-            </div> */}
+            {line.Name == "Culture Line" && (
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-medium text-gray-900">
+                  Line Description
+                </dt>
+                <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 leading-relaxed">
+                  <div className="space-y-4">
+                    {line.Description.split(/(?<=[.?!])\s+/).map(
+                      (sentence, idx) => (
+                        <p key={idx}>{sentence.trim()}</p>
+                      )
+                    )}
+                  </div>
+                </dd>
+              </div>
+            )}
 
             {line.Name !== "Sun Line" && (
               <div>

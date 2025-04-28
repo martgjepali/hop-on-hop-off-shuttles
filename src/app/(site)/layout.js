@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Hop on Hop off shuttle",
+  title: "Hop on Hop off shuttles",
   description: "Online travel website",
   icons: {
     icon: '/favicon.ico'
