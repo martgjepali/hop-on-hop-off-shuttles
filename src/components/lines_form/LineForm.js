@@ -5,85 +5,139 @@ import "react-datepicker/dist/react-datepicker.css";
 import { createLine, createLineSchedule } from "@/services/lineService";
 
 export default function LineForm() {
-  // -- Line fields --
   const [Name, setName] = useState("");
+  const [TripLabel, setTripLabel] = useState("");
   const [Description, setDescription] = useState("");
   const [StartLocation, setStartLocation] = useState("");
   const [EndLocation, setEndLocation] = useState("");
-  const [Duration, setDuration] = useState(0);
   const [Price, setPrice] = useState(0);
+  const [Included, setIncluded] = useState("");
+  const [NotIncluded, setNotIncluded] = useState("");
+  const [Faq, setFaq] = useState("");
+  const [ShortLabel, setShortLabel] = useState("");
+  const [Itinerary, setItinerary] = useState("");
+  const [ItineraryDescription, setItineraryDescription] = useState("");
+  const [ShortDescription, setShortDescription] = useState("");
+  const [Images, setImages] = useState([]);
 
-  // -- Schedules: each object will be { StartDateTime: "2025-03-20T10:34:12.206Z" } in ISO form
   const [schedules, setSchedules] = useState([{ StartDateTime: "" }]);
-
-  // Loading state for form submission
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Helper: Convert ISO string to JavaScript Date (or null)
-  function isoToDate(isoString) {
+  const isoToDate = (isoString) => {
     if (!isoString) return null;
     const date = new Date(isoString);
     return isNaN(date.getTime()) ? null : date;
-  }
+  };
 
-  // Update schedule date/time in state
-  function handleScheduleDateChange(index, dateObj) {
+  const handleScheduleDateChange = (index, dateObj) => {
     const newSchedules = [...schedules];
-    newSchedules[index].StartDateTime = dateObj ? dateObj.toISOString() : "";
+    newSchedules[index].StartDateTime = dateObj?.toISOString() || "";
     setSchedules(newSchedules);
-  }
+  };
 
-  // Add another schedule entry
-  function handleAddSchedule() {
+  const handleAddSchedule = () => {
     setSchedules([...schedules, { StartDateTime: "" }]);
-  }
+  };
 
-  // Remove a schedule entry
-  function handleRemoveSchedule(index) {
-    const newSchedules = schedules.filter((_, i) => i !== index);
-    setSchedules(newSchedules);
-  }
+  const handleRemoveSchedule = (index) => {
+    const updated = schedules.filter((_, i) => i !== index);
+    setSchedules(updated);
+  };
 
-  // Submit the form
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    console.log("Selected files:", files); // optional debug
+    setImages(files);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    try {
-      // 1) Create the line
-      const lineData = {
-        Name,
-        Description,
-        StartLocation,
-        EndLocation,
-        Duration: Number(Duration),
-        Price: Number(Price),
-      };
-      const createdLine = await createLine(lineData);
 
-      // 2) Create schedules if any
-      const lineId = createdLine.id || createdLine.LineID; // Adjust based on your API response
+    try {
+      const formData = new FormData();
+      formData.append("Name", Name);
+      formData.append("TripLabel", TripLabel);
+      formData.append("Description", Description);
+      formData.append("StartLocation", StartLocation);
+      formData.append("EndLocation", EndLocation);
+      formData.append("Price", Price.toString());
+      formData.append("Included", Included);
+      formData.append("NotIncluded", NotIncluded);
+      formData.append("Faq", Faq);
+      formData.append("ShortLabel", ShortLabel);
+      formData.append("Itinerary", Itinerary);
+      formData.append("ItineraryDescription", ItineraryDescription);
+      formData.append("ShortDescription", ShortDescription);
+      Images.forEach((file) => formData.append("images", file));
+
+      const createdLine = await createLine(formData);
+      const lineId = createdLine.LineID || createdLine.id;
+
       const validSchedules = schedules.filter((s) => s.StartDateTime !== "");
       if (validSchedules.length > 0) {
         await createLineSchedule(lineId, validSchedules);
       }
 
       alert("Line and schedules created successfully!");
-
-      // Reset form
-      setName("");
-      setDescription("");
-      setStartLocation("");
-      setEndLocation("");
-      setDuration(0);
-      setPrice(0);
-      setSchedules([{ StartDateTime: "" }]);
+      resetForm();
     } catch (error) {
-      console.error("Error creating line or schedules:", error);
-      alert("Failed to create line or schedules. Check console for details.");
+      console.error("Submission error:", error);
+      alert("Something went wrong. See console.");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const resetForm = () => {
+    setName("");
+    setTripLabel("");
+    setDescription("");
+    setStartLocation("");
+    setEndLocation("");
+    setPrice(0);
+    setIncluded("");
+    setNotIncluded("");
+    setFaq("");
+    setShortLabel("");
+    setItinerary("");
+    setItineraryDescription("");
+    setShortDescription("");
+    setImages([]);
+    setSchedules([{ StartDateTime: "" }]);
+  };
+
+  const renderInput = (
+    label,
+    value,
+    setter,
+    type = "text",
+    required = false
+  ) => (
+    <div className="relative z-0 w-full group">
+      <input
+        type={type}
+        name={label}
+        id={label}
+        value={value}
+        onChange={(e) => setter(e.target.value)}
+        className="block w-full py-2.5 px-0 text-sm text-gray-900 bg-transparent 
+                   border-0 border-b-2 border-gray-300 appearance-none 
+                   focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        placeholder=" "
+        required={required}
+      />
+      <label
+        htmlFor={label}
+        className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 
+                   top-3 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 
+                   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
+                   peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        {label.replace(/([A-Z])/g, " $1").trim()}
+      </label>
+    </div>
+  );
 
   return (
     <form
@@ -91,149 +145,53 @@ export default function LineForm() {
       className="w-full max-w-sm sm:max-w-md md:max-w-2xl mt-2 space-y-4"
     >
       <h1 className="text-2xl font-bold mb-4">Add Line</h1>
+
       {/* Line Fields */}
-      <div className="relative z-0 w-full group">
-        <input
-          type="text"
-          name="Name"
-          id="Name"
-          value={Name}
-          onChange={(e) => setName(e.target.value)}
-          className="block w-full py-2.5 px-0 text-sm text-gray-900 bg-transparent 
-                     border-0 border-b-2 border-gray-300 appearance-none 
-                     focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          placeholder=" "
-          required
-        />
-        <label
-          htmlFor="Name"
-          className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 
-                     top-3 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 
-                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-                     peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Name
-        </label>
-      </div>
+      {renderInput("Name", Name, setName, "text", true)}
+      {renderInput("TripLabel", TripLabel, setTripLabel)}
+      {renderInput("Description", Description, setDescription, "text", true)}
+      {renderInput(
+        "StartLocation",
+        StartLocation,
+        setStartLocation,
+        "text",
+        true
+      )}
+      {renderInput("EndLocation", EndLocation, setEndLocation, "text", true)}
+      {renderInput("Price", Price, setPrice, "number", true)}
+      {renderInput("Included", Included, setIncluded)}
+      {renderInput("NotIncluded", NotIncluded, setNotIncluded)}
+      {renderInput("Faq", Faq, setFaq)}
+      {renderInput("ShortLabel", ShortLabel, setShortLabel)}
+      {renderInput("Itinerary", Itinerary, setItinerary)}
+      {renderInput(
+        "ItineraryDescription",
+        ItineraryDescription,
+        setItineraryDescription
+      )}
+      {renderInput("ShortDescription", ShortDescription, setShortDescription)}
 
       <div className="relative z-0 w-full group">
         <input
-          type="text"
-          name="Description"
-          id="Description"
-          value={Description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="block w-full py-2.5 px-0 text-sm text-gray-900 bg-transparent 
-                     border-0 border-b-2 border-gray-300 appearance-none 
-                     focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          placeholder=" "
-          required
+          type="file"
+          name="images"
+          id="images"
+          multiple
+          onChange={handleImageChange} // <-- now using your defined function
+          className="block w-full text-sm text-gray-900 border-0 
+         file:mr-4 file:py-2.5 file:px-4 file:border-0 
+         file:text-sm file:font-semibold 
+         file:bg-blue-50 file:text-blue-700 
+         hover:file:bg-blue-100"
         />
-        <label
-          htmlFor="Description"
-          className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 
-                     top-3 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 
-                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-                     peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Description
-        </label>
-      </div>
 
-      <div className="relative z-0 w-full group">
-        <input
-          type="text"
-          name="StartLocation"
-          id="StartLocation"
-          value={StartLocation}
-          onChange={(e) => setStartLocation(e.target.value)}
-          className="block w-full py-2.5 px-0 text-sm text-gray-900 bg-transparent 
-                     border-0 border-b-2 border-gray-300 appearance-none 
-                     focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          placeholder=" "
-          required
-        />
-        <label
-          htmlFor="StartLocation"
-          className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 
-                     top-3 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 
-                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-                     peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Start Location
-        </label>
-      </div>
-
-      <div className="relative z-0 w-full group">
-        <input
-          type="text"
-          name="EndLocation"
-          id="EndLocation"
-          value={EndLocation}
-          onChange={(e) => setEndLocation(e.target.value)}
-          className="block w-full py-2.5 px-0 text-sm text-gray-900 bg-transparent 
-                     border-0 border-b-2 border-gray-300 appearance-none 
-                     focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          placeholder=" "
-          required
-        />
-        <label
-          htmlFor="EndLocation"
-          className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 
-                     top-3 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 
-                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-                     peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          End Location
-        </label>
-      </div>
-
-      <div className="relative z-0 w-full group">
-        <input
-          type="number"
-          name="Duration"
-          id="Duration"
-          value={Duration}
-          onChange={(e) => setDuration(e.target.value)}
-          className="block w-full py-2.5 px-0 text-sm text-gray-900 bg-transparent 
-                     border-0 border-b-2 border-gray-300 appearance-none 
-                     focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          placeholder=" "
-          required
-        />
-        <label
-          htmlFor="Duration"
-          className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 
-                     top-3 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 
-                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-                     peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Duration (minutes or hours)
-        </label>
-      </div>
-
-      <div className="relative z-0 w-full group">
-        <input
-          type="number"
-          name="Price"
-          id="Price"
-          value={Price}
-          onChange={(e) => setPrice(e.target.value)}
-          className="block w-full py-2.5 px-0 text-sm text-gray-900 bg-transparent 
-                     border-0 border-b-2 border-gray-300 appearance-none 
-                     focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          placeholder=" "
-          required
-        />
-        <label
-          htmlFor="Price"
-          className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 
-                     top-3 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 
-                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-                     peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Price
-        </label>
+        {Images.length > 0 && (
+          <ul className="text-sm text-gray-600 list-disc pl-5">
+            {Images.map((file, idx) => (
+              <li key={idx}>{file.name}</li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Line Schedules */}
@@ -269,7 +227,6 @@ export default function LineForm() {
             </div>
           );
         })}
-        {/* Single "Add Schedule" Button */}
         <button
           type="button"
           onClick={handleAddSchedule}
@@ -279,16 +236,15 @@ export default function LineForm() {
         </button>
       </div>
 
-      {/* Submit Button */}
+      {/* Submit */}
       <button
         type="submit"
         disabled={isSubmitting}
         className={`text-white bg-blue-700 hover:bg-blue-800 
-                   focus:ring-4 focus:outline-none focus:ring-blue-300 
-                   font-medium rounded-lg text-sm w-full sm:w-auto 
-                   px-5 py-2.5 text-center ${
-                     isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                   }`}
+             focus:ring-4 focus:outline-none focus:ring-blue-300 
+             font-medium rounded-lg text-sm w-full 
+             px-5 py-2.5 text-center mb-6 pb-4
+             ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         {isSubmitting ? "Submitting..." : "Submit"}
       </button>

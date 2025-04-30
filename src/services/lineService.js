@@ -7,23 +7,22 @@ console.log("BASE_URL:", BASE_URL);
 /**
  * Creates a new line using the FastAPI endpoint.
  *
- * @param {Object} lineData - The data for the new line.
+ * @param {Object} formData - The data for the new line.
  * @returns {Promise<Object>} - The newly created line object.
  * @throws {Error} - If the creation fails.
  */
-export async function createLine(lineData) {
+export async function createLine(formData) {
   const response = await fetch(`${BASE_URL}/lines/`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(lineData),
+    body: formData, // ✅ Let the browser handle headers
   });
+
   if (!response.ok) {
     throw new Error("Failed to create line");
   }
   return await response.json();
 }
+
 
 /**
  * Creates one or more line schedules for a given line.
