@@ -1,22 +1,21 @@
-"use client";
+import TimeTableClient from "./TimeTableClient";
 
-import TimetableTable from "@/components/time_table/TimeTable";
-import { timetableData } from "@/constants/timeTableData";
-
-const TimeTablePage = () => {
-  return (
-    <div className="max-w-4xl mx-auto p-6 py-6 sm:py-35">
-      {timetableData.map((entry, idx) => (
-        <div key={idx} className="mb-10">
-          <h3 className="text-2xl font-bold text-[#00537E] mb-2">
-            {entry.line}
-          </h3>
-          <p className="text-sm italic mb-4 text-gray-600">{entry.route}</p>
-          <TimetableTable timetable={entry.table} />
-        </div>
-      ))}
-    </div>
-  );
+export const metadata = {
+  title: "Timetable – KMG Shuttles Schedule Overview",
+  description:
+    "Check the complete schedule of KMG shuttle lines including Sea Line, Culture Line, and Sun Line. Plan your Saranda trips with ease.",
+  openGraph: {
+    title: "Shuttle Timetable | KMG Shuttles",
+    description: "Real-time departure and arrival schedule for Saranda shuttle lines.",
+    url: "https://kmgshuttles.al/time_table",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
-export default TimeTablePage;
+export default function TimeTablePage() {
+  return <TimeTableClient />;
+}

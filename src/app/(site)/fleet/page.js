@@ -1,6 +1,13 @@
 import Image from "next/image";
 import { fleetData } from "@/constants/fleetData";
 
+export const metadata = {
+  title: "Our Fleet – KMG Hop-On Hop-Off Shuttles",
+  description:
+    "Explore our modern and comfortable fleet, designed to give you the best sightseeing experience in Saranda.",
+  robots: { index: true, follow: true },
+};
+
 export default function OurFleet() {
   return (
     <section className="relative isolate py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8">
