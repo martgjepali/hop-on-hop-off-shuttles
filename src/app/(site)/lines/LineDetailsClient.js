@@ -6,7 +6,7 @@ import Link from "next/link";
 import Modal from "@/components/modal/SeaLineModal";
 import TimeTable from "@/components/time_table/TimeTable";
 import useMediaQuery from "@/app/hooks/useMediaQuery";
-import { sunLineTable } from "@/constants/timeTableData";
+import { timetableData } from "@/constants/timeTableData";
 
 import {
   Listbox,
@@ -171,7 +171,14 @@ export default function LineDetailsClient({ line }) {
               ))}
         </div>
 
-        {line.Name === "Sun Line" && <TimeTable timetable={sunLineTable} />}
+        {line.Name === "Sun Line" && (
+          <TimeTable
+            timetable={
+              timetableData.find((line) => line.line === "Sun Line")?.table ||
+              []
+            }
+          />
+        )}
 
         <div className="border-t border-gray-300">
           <dl className="divide-y divide-gray-300">
@@ -187,7 +194,9 @@ export default function LineDetailsClient({ line }) {
                 Start Location
               </dt>
               <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                <Link href={line.StartLocation} target="_blank">{line.StartLocation}</Link>
+                <Link href={line.StartLocation} target="_blank">
+                  {line.StartLocation}
+                </Link>
               </dd>
             </div>
 
