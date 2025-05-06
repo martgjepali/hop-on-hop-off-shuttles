@@ -312,26 +312,39 @@ export default function LineDetailsClient({ line }) {
                   <dt className="text-sm font-medium text-gray-900">
                     Itinerary Description
                   </dt>
+
                   <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 leading-relaxed">
                     <div className="space-y-4">
-                      {line.ItineraryDescription.split(/(?<=[.?!])\s+/).map(
-                        (sentence, idx) => {
-                          const bolded = sentence.replace(
-                            /\b([A-ZÇËÄÖÜ]{2,}(?:\s+[A-ZÇËÄÖÜ]{2,})*)\b/g,
-                            "<strong>$1</strong>"
-                          );
+                      {(() => {
+                        let himareSeen = false; // flip once we’ve capital-bolded it
 
-                          return (
-                            <p
-                              key={idx}
-                              dangerouslySetInnerHTML={{
-                                __html: bolded.trim(),
-                              }}
-                              className="mb-1"
-                            />
-                          );
-                        }
-                      )}
+                        return line.ItineraryDescription.split(/(?<=[.?!])\s+/) // same sentence split
+                          .map((sentence, idx) => {
+                            // 1️⃣ Bold ALL-CAPS headings first (so we don’t double-wrap HIMARE later)
+                            let html = sentence.replace(
+                              /\b([A-ZÇËÄÖÜ]{2,}(?:\s+[A-ZÇËÄÖÜ]{2,})*)\b/g,
+                              "<strong>$1</strong>"
+                            );
+
+                            // 2️⃣ Capital-bold the very first Himarë/Himare, once
+                            if (!himareSeen) {
+                              html = html.replace(/\bHimar[ëe]\b/i, (match) => {
+                                himareSeen = true;
+                                return `<strong>${match.toUpperCase()}</strong>`; // → HIMARË / HIMARE
+                              });
+                            }
+
+                            return (
+                              <p
+                                key={idx}
+                                className="mb-1"
+                                dangerouslySetInnerHTML={{
+                                  __html: html.trim(),
+                                }}
+                              />
+                            );
+                          });
+                      })()}
                     </div>
                   </dd>
                 </div>

@@ -1,10 +1,3 @@
-export const sunLineTable = [
-  { "Saranda Start": "09:30", "Blue Eye Start": "10:00" },
-  { "Saranda Start": "11:00", "Blue Eye Start": "12:00" },
-  { "Saranda Start": "13:00", "Blue Eye Start": "14:00" },
-  { "Saranda Start": "", "Blue Eye Start": "15:30" },
-];
-
 export const timetableData = [
   {
     line: "Sun Line",
