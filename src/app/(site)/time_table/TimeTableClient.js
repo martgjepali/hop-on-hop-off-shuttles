@@ -28,7 +28,11 @@ const TimeTableClient = () => {
   }, []);
 
   if (loading) {
-    return <p className="text-center text-gray-600 mt-20"><Spinner /></p>;
+    return (
+      <div className="text-center text-gray-600 mt-20">
+        <Spinner />
+      </div>
+    );
   }
 
   return (
