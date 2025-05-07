@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import TimeTableCard from "@/components/timetable_card/TimeTableCard";
+import Spinner from "@/components/spinner/Spinner";
 import { getAllTimeTables, updateTimeTable } from "@/services/timeTableService";
 
 export default function EditTimeTablePage() {
@@ -41,7 +42,7 @@ export default function EditTimeTablePage() {
     }
   };
 
-  if (loading) return <p className="text-center text-gray-600 mt-20">Loading...</p>;
+  if (loading) return <p className="text-center text-gray-600 mt-20"><Spinner /></p>;
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">

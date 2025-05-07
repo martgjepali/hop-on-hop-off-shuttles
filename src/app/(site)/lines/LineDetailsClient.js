@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Modal from "@/components/modal/SeaLineModal";
-import TimeTable from "@/components/time_table/TimeTable";
-import useMediaQuery from "@/app/hooks/useMediaQuery";
-import { timetableData } from "@/constants/timeTableData";
+import { getAllTimeTables } from "@/services/timeTableService";
+import TimeTableCard from "@/components/timetable_card/TimeTableCard";
 
 import {
   Listbox,
@@ -20,6 +19,28 @@ import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 export default function LineDetailsClient({ line }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [sunLineTable, setSunLineTable] = useState(null);
+
+  useEffect(() => {
+    async function fetchSunLine() {
+      try {
+        const data = await getAllTimeTables();
+        const sunLine = data.find((t) => t.LineName === "Sun Line");
+        if (sunLine) {
+          setSunLineTable({
+            ...sunLine,
+            table: sunLine.rows, // assuming `.rows` contains the timetable
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load Sun Line timetable:", error);
+      }
+    }
+
+    if (line.Name === "Sun Line") {
+      fetchSunLine();
+    }
+  }, [line.Name]);
 
   if (!line) {
     return (
@@ -171,13 +192,8 @@ export default function LineDetailsClient({ line }) {
               ))}
         </div>
 
-        {line.Name === "Sun Line" && (
-          <TimeTable
-            timetable={
-              timetableData.find((line) => line.line === "Sun Line")?.table ||
-              []
-            }
-          />
+        {line.Name === "Sun Line" && sunLineTable && (
+          <TimeTableCard data={sunLineTable} readOnly />
         )}
 
         <div className="border-t border-gray-300">
