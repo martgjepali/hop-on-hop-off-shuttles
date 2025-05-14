@@ -1,6 +1,6 @@
 // reservation/page.js
 import { Suspense } from "react";
-import BookingForm from "@/components/booking_form/BookingForm";
+import BookingForm from "@/components/ui/booking_form/BookingForm";
 
 export default function Page() {
   return (

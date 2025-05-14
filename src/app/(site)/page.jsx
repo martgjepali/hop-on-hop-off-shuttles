@@ -1,5 +1,5 @@
-import Hero from "@/components/hero/Hero";
-import Testimonials from "@/components/testimonials/Testimonials";
+import Hero from "@/components/ui/hero/Hero";
+import Testimonials from "@/components/ui/testimonials/Testimonials";
 
 export const metadata = {
   title:

@@ -1,4 +1,4 @@
-import LineForm from "@/components/lines_form/LineForm";
+import LineForm from "@/components/ui/lines_form/LineForm";
 
 const AddLine = () => {
   return (

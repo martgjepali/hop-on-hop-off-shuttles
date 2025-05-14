@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import { CustomNavBar } from "@/components/navbar/NavBar";
-import Footer from "@/components/footer/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton/WhatsAppButton";
+import { CustomNavBar } from "@/components/ui/navbar/NavBar";
+import Footer from "@/components/ui/footer/Footer";
+import WhatsAppButton from "@/components/ui/WhatsAppButton/WhatsAppButton";
 import { Toaster } from "react-hot-toast";
 
 import "../globals.css";

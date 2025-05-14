@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import AdminSidebar from "@/components/sidebar/Sidebar";
+import AdminSidebar from "@/components/ui/sidebar/Sidebar";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/context/AuthContext";
 import AuthGuard from "@/components/auth/AuthGuard";

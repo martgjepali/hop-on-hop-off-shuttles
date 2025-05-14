@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Table from "@/components/table/Table";
-import BookingTabs from "@/components/booking_tabs/BookingTabs";
+import Table from "@/components/ui/table/Table";
+import BookingTabs from "@/components/ui/booking_tabs/BookingTabs";
 import AuthGuard from "@/components/auth/AuthGuard";
 import { getAllBookings, updateBookingStatus } from "@/services/bookingService";
 
@@ -65,7 +65,7 @@ export default function AdminDashboard() {
 
   return (
     <AuthGuard>
-      <div className="p-4 sm:ml-64">
+      <div className="w-full max-w-[1600px] mx-auto px-4">
         <h1 className="text-2xl font-bold mb-4">Booking Requests</h1>
         <BookingTabs
           seaLineTable={

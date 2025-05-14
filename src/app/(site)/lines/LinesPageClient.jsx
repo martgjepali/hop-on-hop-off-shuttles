@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LineCard from "@/components/line_card/LineCard";
-import Spinner from "@/components/spinner/Spinner";
+import LineCard from "@/components/ui/line_card/LineCard";
+import Spinner from "@/components/ui/spinner/Spinner";
 import { getLines } from "@/services/lineService";
 
 export default function LinesPageClient() {

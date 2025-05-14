@@ -1,6 +1,6 @@
 "use client";
 
-import TimetableTable from "@/components/time_table/TimeTable";
+import TimetableTable from "@/components/ui/time_table/TimeTable";
 import { timetableData } from "@/constants/timeTableData";
 
 const TimeTableClient = () => {

@@ -74,3 +74,49 @@ export async function getLineById(lineId) {
   }
   return await response.json();
 }
+
+
+/**
+ * Update a line using the FastAPI endpoint.
+ *
+ * @param {string|number} lineId - The ID of the line to retrieve.
+ * @returns {Promise<Object>} - The newly updated line object.
+ * @throws {Error} - If the creation fails.
+ */
+export async function updateLine(lineId, formData) {
+  const response = await fetch(`${BASE_URL}/lines/${lineId}`, {
+    method: "PUT",
+    body: formData, // ✅ Let the browser handle headers
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create line");
+  }
+  return await response.json();
+}
+
+
+/**
+ * Deletes multiple lines.
+ *
+ * @param {Array<number>} linesIds - An array of line IDs to delete.
+ * @returns {Promise<Object>} - An object containing details about the deletion (for example, the number of lines deleted).
+ * @throws {Error} - If the deletion fails.
+ */
+export async function deleteLines(linesIds) {
+  const response = await fetch(`${BASE_URL}/lines`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ lines_ids: linesIds }),
+  });
+
+  if (!response.ok) {
+    // Attempt to read error details from the response body
+    const errorData = await response.json();
+    throw new Error(errorData.detail || "Failed to delete bookings");
+  }
+
+  return await response.json();
+}

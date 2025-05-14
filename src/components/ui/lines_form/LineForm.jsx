@@ -9,7 +9,6 @@ export default function LineForm() {
   const [TripLabel, setTripLabel] = useState("");
   const [Description, setDescription] = useState("");
   const [StartLocation, setStartLocation] = useState("");
-  const [EndLocation, setEndLocation] = useState("");
   const [Price, setPrice] = useState(0);
   const [Included, setIncluded] = useState("");
   const [NotIncluded, setNotIncluded] = useState("");
@@ -60,7 +59,6 @@ export default function LineForm() {
       formData.append("TripLabel", TripLabel);
       formData.append("Description", Description);
       formData.append("StartLocation", StartLocation);
-      formData.append("EndLocation", EndLocation);
       formData.append("Price", Price.toString());
       formData.append("Included", Included);
       formData.append("NotIncluded", NotIncluded);
@@ -94,7 +92,6 @@ export default function LineForm() {
     setTripLabel("");
     setDescription("");
     setStartLocation("");
-    setEndLocation("");
     setPrice(0);
     setIncluded("");
     setNotIncluded("");
@@ -157,7 +154,6 @@ export default function LineForm() {
         "text",
         true
       )}
-      {renderInput("EndLocation", EndLocation, setEndLocation, "text", true)}
       {renderInput("Price", Price, setPrice, "number", true)}
       {renderInput("Included", Included, setIncluded)}
       {renderInput("NotIncluded", NotIncluded, setNotIncluded)}

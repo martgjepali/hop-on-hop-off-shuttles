@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Modal from "@/components/modal/SeaLineModal";
-import TimeTable from "@/components/time_table/TimeTable";
+import Modal from "@/components/ui/modal/SeaLineModal";
+import TimeTable from "@/components/ui/time_table/TimeTable";
 import useMediaQuery from "@/app/hooks/useMediaQuery";
 import { timetableData } from "@/constants/timeTableData";
 

@@ -130,6 +130,7 @@ const Table = ({ data, onAccept, onDecline, onBookingsDeleted }) => {
               <th className="px-4 py-2 font-semibold">Phone Number</th>
               <th className="px-4 py-2 font-semibold">Number of People</th>
               <th className="px-4 py-2 font-semibold">Status</th>
+              <th className="px-4 py-2 font-semibold">Scheduled Date</th>
               <th className="px-4 py-2 font-semibold">
                 Booking Date &amp; Time
               </th>
@@ -163,6 +164,12 @@ const Table = ({ data, onAccept, onDecline, onBookingsDeleted }) => {
                 <td className="px-4 py-2">{booking.PhoneNumber}</td>
                 <td className="px-4 py-2">{booking.NumberOfPeople}</td>
                 <td className="px-4 py-2">{booking.Status}</td>
+                <td className="px-4 py-2">
+                  {booking.schedule?.StartDateTime
+                    ? formatDateTime(booking.schedule.StartDateTime)
+                    : "No date"}
+                </td>
+
                 <td className="px-4 py-2">
                   {formatDateTime(booking.BookingDateTime)}
                 </td>
