@@ -1,18 +1,49 @@
 "use client";
 
-import TimetableTable from "@/components/ui/time_table/TimeTable";
-import { timetableData } from "@/constants/timeTableData";
+import { useEffect, useState } from "react";
+import TimeTableCard from "@/components/ui/timetable_card/TimeTableCard";
+import Spinner from "@/components/spinner/Spinner";
+import { getAllTimeTables } from "@/services/timeTableService";
 
 const TimeTableClient = () => {
+  const [tables, setTables] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTimetables() {
+      try {
+        const data = await getAllTimeTables();
+        const normalized = data.map((item) => ({
+          ...item,
+          table: item.rows,
+        }));
+        setTables(normalized);
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch timetables:", error);
+      }
+    }
+
+    fetchTimetables();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center text-gray-600 mt-20">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-4xl mx-auto p-6 py-6 sm:py-35">
-      {timetableData.map((entry, idx) => (
-        <div key={idx} className="mb-10">
+    <div className="max-w-4xl mx-auto p-6 py-6 sm:py-12">
+      {tables.map((tbl) => (
+        <div key={tbl.ID} className="mb-12">
           <h3 className="text-2xl font-bold text-[#00537E] mb-2">
-            {entry.line}
+            {tbl.LineName}
           </h3>
-          <p className="text-sm italic mb-4 text-gray-600">{entry.route}</p>
-          <TimetableTable timetable={entry.table} />
+          <p className="text-sm italic mb-4 text-gray-600">{tbl.Route}</p>
+          <TimeTableCard data={tbl} readOnly />
         </div>
       ))}
     </div>

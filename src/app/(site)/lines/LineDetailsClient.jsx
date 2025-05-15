@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Modal from "@/components/ui/modal/SeaLineModal";
-import TimeTable from "@/components/ui/time_table/TimeTable";
-import useMediaQuery from "@/app/hooks/useMediaQuery";
-import { timetableData } from "@/constants/timeTableData";
+import { getAllTimeTables } from "@/services/timeTableService";
+import TimeTableCard from "@/components/ui/timetable_card/TimeTableCard";
 
 import {
   Listbox,
@@ -20,6 +19,28 @@ import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 export default function LineDetailsClient({ line }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [sunLineTable, setSunLineTable] = useState(null);
+
+  useEffect(() => {
+    async function fetchSunLine() {
+      try {
+        const data = await getAllTimeTables();
+        const sunLine = data.find((t) => t.LineName === "Sun Line");
+        if (sunLine) {
+          setSunLineTable({
+            ...sunLine,
+            table: sunLine.rows, // assuming `.rows` contains the timetable
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load Sun Line timetable:", error);
+      }
+    }
+
+    if (line.Name === "Sun Line") {
+      fetchSunLine();
+    }
+  }, [line.Name]);
 
   if (!line) {
     return (
@@ -171,13 +192,8 @@ export default function LineDetailsClient({ line }) {
               ))}
         </div>
 
-        {line.Name === "Sun Line" && (
-          <TimeTable
-            timetable={
-              timetableData.find((line) => line.line === "Sun Line")?.table ||
-              []
-            }
-          />
+        {line.Name === "Sun Line" && sunLineTable && (
+          <TimeTableCard data={sunLineTable} readOnly />
         )}
 
         <div className="border-t border-gray-300">
@@ -312,26 +328,39 @@ export default function LineDetailsClient({ line }) {
                   <dt className="text-sm font-medium text-gray-900">
                     Itinerary Description
                   </dt>
+
                   <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 leading-relaxed">
                     <div className="space-y-4">
-                      {line.ItineraryDescription.split(/(?<=[.?!])\s+/).map(
-                        (sentence, idx) => {
-                          const bolded = sentence.replace(
-                            /\b([A-ZÇËÄÖÜ]{2,}(?:\s+[A-ZÇËÄÖÜ]{2,})*)\b/g,
-                            "<strong>$1</strong>"
-                          );
+                      {(() => {
+                        let himareSeen = false; // flip once we’ve capital-bolded it
 
-                          return (
-                            <p
-                              key={idx}
-                              dangerouslySetInnerHTML={{
-                                __html: bolded.trim(),
-                              }}
-                              className="mb-1"
-                            />
-                          );
-                        }
-                      )}
+                        return line.ItineraryDescription.split(/(?<=[.?!])\s+/) // same sentence split
+                          .map((sentence, idx) => {
+                            // 1️⃣ Bold ALL-CAPS headings first (so we don’t double-wrap HIMARE later)
+                            let html = sentence.replace(
+                              /\b([A-ZÇËÄÖÜ]{2,}(?:\s+[A-ZÇËÄÖÜ]{2,})*)\b/g,
+                              "<strong>$1</strong>"
+                            );
+
+                            // 2️⃣ Capital-bold the very first Himarë/Himare, once
+                            if (!himareSeen) {
+                              html = html.replace(/\bHimar[ëe]\b/i, (match) => {
+                                himareSeen = true;
+                                return `<strong>${match.toUpperCase()}</strong>`; // → HIMARË / HIMARE
+                              });
+                            }
+
+                            return (
+                              <p
+                                key={idx}
+                                className="mb-1"
+                                dangerouslySetInnerHTML={{
+                                  __html: html.trim(),
+                                }}
+                              />
+                            );
+                          });
+                      })()}
                     </div>
                   </dd>
                 </div>
