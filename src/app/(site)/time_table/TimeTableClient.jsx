@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import TimeTableCard from "@/components/ui/timetable_card/TimeTableCard";
-import Spinner from "@/components/spinner/Spinner";
+import TimeTableCard from "@/components/timetable_card/TimeTableCard";
+import Spinner from "@/components/ui/spinner/Spinner";
 import { getAllTimeTables } from "@/services/timeTableService";
 
 const TimeTableClient = () => {

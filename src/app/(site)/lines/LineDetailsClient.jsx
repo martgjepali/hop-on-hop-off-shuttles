@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Modal from "@/components/ui/modal/SeaLineModal";
 import { getAllTimeTables } from "@/services/timeTableService";
-import TimeTableCard from "@/components/ui/timetable_card/TimeTableCard";
+import TimeTableCard from "@/components/timetable_card/TimeTableCard";
 
 import {
   Listbox,
