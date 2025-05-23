@@ -12,7 +12,8 @@ export default function MenuSection() {
   ];
 
   return (
-    <section className="bg-black py-12 text-center">
+    <section className="bg-black py-12 text-center relative">
+      {/* Decorative blur background */}
       <div
         className="absolute inset-0 -z-10 transform-gpu overflow-hidden blur-3xl"
         aria-hidden="true"
@@ -25,7 +26,22 @@ export default function MenuSection() {
           }}
         />
       </div>
-      <h2 className="text-4xl font-bold text-[#F5A623] mb-8">Our Menu</h2>
+
+      {/* Main heading */}
+      <h1 className="text-3xl sm:text-4xl font-bold text-[#F5A623] mb-2">
+        AMF PUB - BEST Pre-Drinking place in Saranda!
+      </h1>
+
+      {/* Subheading */}
+      <p className="text-white text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
+        Daily music and Karaoke <br />
+        Albanian night once per week! <br />
+        <span className="text-[#F5A623] font-semibold">
+          ALL COCKTAILS, LONG DRINKS AND SHOTS 1€ - 5€
+        </span>
+      </p>
+
+      {/* Menu grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
         {menuImages.map((src, index) => (
           <div
