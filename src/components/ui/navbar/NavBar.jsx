@@ -18,7 +18,7 @@ export function CustomNavBar() {
     { name: "Fleet", url: "/fleet", icon: Car },
     { name: "Schedules", url: "/time_table", icon: Timer },
     { name: "Contact", url: "/contact", icon: Contact },
-    { name: "Menu", url: "/menu", icon: SquareMenu },
+    { name: "AMF-PUB", url: "/menu", icon: SquareMenu },
   ];
 
   return (
