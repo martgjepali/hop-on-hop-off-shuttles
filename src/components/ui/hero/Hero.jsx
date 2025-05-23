@@ -33,7 +33,7 @@ export default function Hero() {
 
           <div className="flex justify-center mt-6 opacity-0 animate-fade-up animate-fade-delay-2">
             <Image
-              src="/images/kmg-logo.png" // 👈 just the filename
+              src="/images/kmg-logo.png"
               alt="Logo"
               width={180}
               height={80}
