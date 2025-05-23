@@ -6,7 +6,7 @@ import {
   Contact,
   Binoculars,
   Timer,
-  SquareMenu,
+  Beer,
 } from "lucide-react";
 import { clsx } from 'clsx';
 import { NavBar as TubelightNavBar } from "@/components/ui/tubelight-navbar";
@@ -18,7 +18,7 @@ export function CustomNavBar() {
     { name: "Fleet", url: "/fleet", icon: Car },
     { name: "Schedules", url: "/time_table", icon: Timer },
     { name: "Contact", url: "/contact", icon: Contact },
-    { name: "AMF-PUB", url: "/menu", icon: SquareMenu },
+    { name: "AMF-PUB", url: "/menu", icon: Beer },
   ];
 
   return (
