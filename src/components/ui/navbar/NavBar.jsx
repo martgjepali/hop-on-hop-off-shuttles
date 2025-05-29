@@ -8,7 +8,6 @@ import {
   Timer,
   Beer,
 } from "lucide-react";
-import { clsx } from 'clsx';
 import { NavBar as TubelightNavBar } from "@/components/ui/tubelight-navbar";
 
 export function CustomNavBar() {
