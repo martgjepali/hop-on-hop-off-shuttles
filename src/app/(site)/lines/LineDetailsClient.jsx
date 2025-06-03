@@ -143,24 +143,43 @@ export default function LineDetailsClient({ line }) {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-up">
         <div className="mb-6">
-          <h2 className="text-3xl font-bold text-[#F5A623]">
-            {line.Name} Details
-          </h2>
+          <h1 className="text-3xl font-bold text-[#F5A623]">
+            {line.Name === "Culture Line" &&
+              "Gjirokaster & Blue Eye Shuttle Tour – Culture Line"}
+            {line.Name === "Sea Line" &&
+              "Albanian Riviera Beach Shuttle – Sea Line"}
+            {line.Name === "Sun Line" && "Blue Eye Shuttle – Sun Line"}
+            {!["Culture Line", "Sea Line", "Sun Line"].includes(line.Name) &&
+              `${line.Name} Shuttle Line`}
+          </h1>
         </div>
 
-        {line.Name !== "Sun Line" && (
-          <p
-            className={`italic text-sm sm:text-base mb-6 ${
-              line.Name === "Culture LIne"
-                ? "text-[#F5A623]"
-                : line.Name === "Sea Line"
-                ? "text-green-800"
-                : "text-gray-600"
-            }`}
-          >
-            {line.ShortDescription}
-          </p>
-        )}
+        <div className="mb-6 text-base leading-relaxed text-gray-700">
+          <p className="mb-2 italic">{line.ShortDescription}</p>
+          {line.Name === "Culture Line" && (
+            <p>
+              This guided <strong>shuttle tour from Saranda</strong> visits
+              <strong> Gjirokaster, Blue Eye</strong>, Lekuresi Castle, and
+              Mesopotam Monastery — the best way to explore Albania’s historic
+              and natural highlights in a single day.
+            </p>
+          )}
+          {line.Name === "Sea Line" && (
+            <p>
+              Our <strong>Albanian Riviera shuttle</strong> connects Saranda to
+              <strong> Porto Palermo Castle, Himare</strong>, and{" "}
+              <strong>Borsh</strong>, offering a scenic beach experience along
+              the Ionian coast.
+            </p>
+          )}
+          {line.Name === "Sun Line" && (
+            <p>
+              The <strong>Blue Eye shuttle</strong> departs every 30 minutes
+              from Saranda — a quick and affordable ride to one of Albania’s
+              most iconic natural springs.
+            </p>
+          )}
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {line.Images && line.Images.length > 0

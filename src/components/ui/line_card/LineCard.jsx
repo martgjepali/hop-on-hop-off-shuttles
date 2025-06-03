@@ -57,12 +57,38 @@ export default function LineCard({
           {title}
         </div>
 
-        <div className="text-gray-500 text-base mb-6">
-          {itinerary
-            .split(".")
-            .map((sentence, index) =>
-              sentence.trim() ? <p key={index}>{sentence.trim()}.</p> : null
-            )}
+        <div className="text-gray-500 text-base mb-6 space-y-2">
+          {title === "Sun Line" && (
+            <p>
+              <strong>Blue Eye Shuttle:</strong> Direct rides from Saranda every
+              30 minutes to the breathtaking Blue Eye spring. Perfect for nature
+              lovers and day trips.
+            </p>
+          )}
+
+          {title === "Sea Line" && (
+            <p>
+              <strong>Albanian Riviera Shuttle:</strong> Visit Porto Palermo
+              Castle, Himare, and Borsh beach in one relaxing coastal tour from
+              Saranda.
+            </p>
+          )}
+
+          {title === "Culture Line" && (
+            <p>
+              <strong>Gjirokaster & Blue Eye Tour:</strong> Explore the UNESCO
+              city of Gjirokaster, Blue Eye natural spring, and Lekuresi Castle
+              with comfortable shuttle transport.
+            </p>
+          )}
+
+          {!["Sun Line", "Sea Line", "Culture Line"].includes(title) &&
+            itinerary &&
+            itinerary
+              .split(".")
+              .map((sentence, index) =>
+                sentence.trim() ? <p key={index}>{sentence.trim()}.</p> : null
+              )}
         </div>
 
         <Link
