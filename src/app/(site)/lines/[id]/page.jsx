@@ -1,31 +1,40 @@
+// ✅ page.jsx or page.js
 import LineDetailsClient from "../LineDetailsClient";
 import { notFound } from "next/navigation";
 import { getLineById } from "@/services/lineService";
 
-// 🔹 Dynamic metadata function
-export async function generateMetadata({ params }) {
-  try {
-    const line = await getLineById(params.id);
+// ✅ Make generateMetadata fully async-safe
+export async function generateMetadata(props) {
+  const params = await props.params;
+  const id = params.id;
 
+  if (!id) return { title: "Not Found", robots: { index: false } };
+
+  try {
+    const line = await getLineById(id);
     return {
       title: `${line.Name} – Shuttle Line | KMG`,
-      description: line.ShortDescription || line.Description || "Explore one of our exciting shuttle lines with KMG Shuttles.",
+      description:
+        line.ShortDescription ||
+        line.Description ||
+        "Explore one of our exciting shuttle lines with KMG Shuttles.",
       openGraph: {
         title: `${line.Name} – Shuttle Line | KMG`,
         description: line.ShortDescription || line.Description,
-        url: `https://kmgshuttles.al/lines/${params.id}`,
+        url: `https://kmgshuttles.al/lines/${id}`,
         type: "article",
-        images: line.Images?.map((src) => ({
-          url: `https://kmgshuttles.al${src}`,
-          width: 1200,
-          height: 630,
-          alt: line.Name,
-        })) || [],
+        images:
+          line.Images?.map((src) => ({
+            url: `https://kmgshuttles.al${src}`,
+            width: 1200,
+            height: 630,
+            alt: line.Name,
+          })) || [],
       },
       robots: { index: true, follow: true },
     };
   } catch (err) {
-    console.error("Failed to generate metadata for line:", err);
+    console.error("Metadata generation failed:", err);
     return {
       title: "Line Not Found | KMG",
       description: "This line could not be found.",
@@ -34,12 +43,13 @@ export async function generateMetadata({ params }) {
   }
 }
 
-// 🔹 Mark page as dynamic
+// ✅ Mark page as dynamic
 export const dynamic = "force-dynamic";
 
-// 🔹 Main component
-export default async function Page({ params }) {
-  const { id } = params;
+// ✅ Main Page
+export default async function Page(props) {
+  const params = await props.params;
+  const id = params.id;
 
   if (!id) return notFound();
 
