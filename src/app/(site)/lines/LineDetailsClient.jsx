@@ -88,9 +88,14 @@ export default function LineDetailsClient({ line }) {
 
   const selectedImageIndices = getImageIndices(line.Name);
 
-  const scheduleOptions = line.schedules.sort(
-    (a, b) => new Date(a.StartDateTime) - new Date(b.StartDateTime)
-  );
+  const now = new Date();
+
+  const scheduleOptions = line.schedules
+    .filter((schedule) => {
+      const scheduleDate = new Date(schedule.StartDateTime);
+      return scheduleDate.setHours(0, 0, 0, 0) >= now.setHours(0, 0, 0, 0);
+    })
+    .sort((a, b) => new Date(a.StartDateTime) - new Date(b.StartDateTime));
 
   const handleBookingClick = () => {
     if (line.Name === "Sun Line") {
