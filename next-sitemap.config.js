@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 /** @type {import('next-sitemap').IConfig} */
 const config = {
-  siteUrl: "https://kmgshuttles.al",
+  siteUrl: "https://www.kmgshuttles.al",
   generateRobotsTxt: true,
   trailingSlash: false,
   outDir: "./public",
