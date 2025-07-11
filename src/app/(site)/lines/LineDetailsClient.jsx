@@ -90,12 +90,18 @@ export default function LineDetailsClient({ line }) {
 
   const now = new Date();
 
-  const scheduleOptions = line.schedules
-    .filter((schedule) => {
-      const scheduleDate = new Date(schedule.StartDateTime);
-      return scheduleDate.setHours(0, 0, 0, 0) >= now.setHours(0, 0, 0, 0);
-    })
-    .sort((a, b) => new Date(a.StartDateTime) - new Date(b.StartDateTime));
+  const scheduleOptions = (line.schedules || []).map((schedule) => {
+    const scheduleDateTime = new Date(schedule.StartDateTime);
+
+    // For "Culture Line", allow all
+    const isPast =
+      line.Name === "Culture Line" ? false : scheduleDateTime < now;
+
+    return {
+      ...schedule,
+      isPast,
+    };
+  });
 
   const handleBookingClick = () => {
     if (line.Name === "Sun Line") {
@@ -481,7 +487,12 @@ export default function LineDetailsClient({ line }) {
                           <ListboxOption
                             key={schedule.ScheduleID}
                             value={schedule}
-                            className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-focus:bg-indigo-600 data-focus:text-white"
+                            disabled={schedule.isPast}
+                            className={`group relative select-none py-2 pl-3 pr-9 ${
+                              schedule.isPast
+                                ? "text-gray-400 cursor-not-allowed"
+                                : "text-gray-900 cursor-default"
+                            } data-focus:bg-indigo-600 data-focus:text-white`}
                           >
                             {({ selected, active }) => (
                               <>

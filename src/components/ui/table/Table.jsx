@@ -16,6 +16,10 @@ const Table = ({ data, onAccept, onDecline, onBookingsDeleted }) => {
   // State to track selected booking IDs for deletion
   const [selectedBookings, setSelectedBookings] = useState([]);
 
+  const [isSortedLatest, setIsSortedLatest] = useState(false);
+
+  const [sortedData, setSortedData] = useState([]);
+
   // Handler for date filter input changes
   const handleFilterChange = (e) => {
     setFilterDate(e.target.value);
@@ -23,16 +27,17 @@ const Table = ({ data, onAccept, onDecline, onBookingsDeleted }) => {
     setCurrentPage(1);
   };
 
+  const handleSortByLatest = () => {
+    const sorted = [...data].sort((a, b) => {
+      return new Date(b.BookingDateTime) - new Date(a.BookingDateTime);
+    });
+    setIsSortedLatest(true);
+    setCurrentPage(1);
+    setSortedData(sorted);
+  };
+
   // Filter data by Booking Date if a filter is set
-  const filteredData = filterDate
-    ? data.filter((booking) => {
-        // Convert booking date/time to YYYY-MM-DD
-        const bookingDate = new Date(booking.BookingDateTime)
-          .toISOString()
-          .slice(0, 10);
-        return bookingDate === filterDate;
-      })
-    : data;
+  const filteredData = isSortedLatest ? sortedData : data;
 
   // Calculate total pages based on filtered data
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
@@ -96,17 +101,14 @@ const Table = ({ data, onAccept, onDecline, onBookingsDeleted }) => {
       {/* Filter and Delete Selected Controls */}
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <label htmlFor="filterDate" className="mr-2 font-medium">
-            Filter by Booking Date:
-          </label>
-          <input
-            id="filterDate"
-            type="date"
-            value={filterDate}
-            onChange={handleFilterChange}
-            className="border border-gray-300 rounded px-2 py-1"
-          />
+          <button
+            onClick={handleSortByLatest}
+            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors"
+          >
+            Sort by Latest
+          </button>
         </div>
+
         <button
           onClick={handleDeleteSelected}
           className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors disabled:opacity-50"
