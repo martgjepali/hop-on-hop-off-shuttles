@@ -3,7 +3,6 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 console.log("BASE_URL:", BASE_URL);
 
-
 /**
  * Creates a new line using the FastAPI endpoint.
  *
@@ -22,7 +21,6 @@ export async function createLine(formData) {
   }
   return await response.json();
 }
-
 
 /**
  * Creates one or more line schedules for a given line.
@@ -43,6 +41,69 @@ export async function createLineSchedule(lineId, schedules) {
   if (!response.ok) {
     throw new Error(`Failed to create schedules for line ${lineId}`);
   }
+  return await response.json();
+}
+
+/**
+ * Fetches all line schedules from the FastAPI backend.
+ *
+ * @returns {Promise<Array>} - A list of line objects.
+ * @throws {Error} - If the fetch fails.
+ */
+export async function getSchedules() {
+  const response = await fetch(`${BASE_URL}/lines/schedules/`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch schedules");
+  }
+  return await response.json();
+}
+
+/**
+ * Updates a line schedule.
+ *
+ * @param {number} scheduleId - The schedule ID to update.
+ * @param {Object} scheduleData - The updated schedule data.
+ * @returns {Promise<Object>} - The updated schedule object.
+ * @throws {Error} - If the update fails.
+ */
+export async function updateLineSchedule(scheduleId, scheduleData) {
+  const response = await fetch(`${BASE_URL}/lines/schedules/${scheduleId}/`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(scheduleData),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.detail || "Failed to update schedule");
+  }
+
+  return await response.json();
+}
+
+/**
+ * Deletes multiple line schedules.
+ *
+ * @param {Array<number>} scheduleIds - An array of schedule IDs to delete.
+ * @returns {Promise<Object>} - Deletion result.
+ * @throws {Error} - If the deletion fails.
+ */
+export async function deleteLineSchedules(scheduleIds) {
+  const response = await fetch(`${BASE_URL}/lines/schedules/`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ schedule_ids: scheduleIds }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.detail || "Failed to delete schedules");
+  }
+
   return await response.json();
 }
 
@@ -75,7 +136,6 @@ export async function getLineById(lineId) {
   return await response.json();
 }
 
-
 /**
  * Update a line using the FastAPI endpoint.
  *
@@ -94,7 +154,6 @@ export async function updateLine(lineId, formData) {
   }
   return await response.json();
 }
-
 
 /**
  * Deletes multiple lines.
