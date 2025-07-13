@@ -90,18 +90,26 @@ export default function LineDetailsClient({ line }) {
 
   const now = new Date();
 
-  const scheduleOptions = (line.schedules || []).map((schedule) => {
-    const scheduleDateTime = new Date(schedule.StartDateTime);
+  const scheduleOptions = (line.schedules || [])
+    .map((schedule) => {
+      const scheduleDateTime = new Date(schedule.StartDateTime);
 
-    // For "Culture Line", allow all
-    const isPast =
-      line.Name === "Culture Line" ? false : scheduleDateTime < now;
+      const isPast = scheduleDateTime < now;
 
-    return {
-      ...schedule,
-      isPast,
-    };
-  });
+      return {
+        ...schedule,
+        isPast,
+        dateObj: scheduleDateTime, // Save date for sorting
+      };
+    })
+    .sort((a, b) => {
+      // Sort upcoming dates first, past dates last
+      if (a.isPast !== b.isPast) {
+        return a.isPast ? 1 : -1;
+      }
+      // Within each group, sort by date
+      return a.dateObj - b.dateObj;
+    });
 
   const handleBookingClick = () => {
     if (line.Name === "Sun Line") {
