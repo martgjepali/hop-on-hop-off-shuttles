@@ -166,10 +166,9 @@ export default function LineDetailsClient({ line }) {
             {line.Name === "Culture Line" &&
               "Gjirokaster & Blue Eye Shuttle Tour – Culture Line"}
             {line.Name === "Sea Line" &&
-              "Albanian Riviera Beach Shuttle – Sea Line"}
-            {line.Name === "Sun Line" && "Blue Eye Shuttle – Sun Line"}
-            {!["Culture Line", "Sea Line", "Sun Line"].includes(line.Name) &&
-              `${line.Name} Shuttle Line`}
+              "Albanian Riviera Shuttle – Porto Palermo, Himare, Borsh"}
+            {line.Name === "Sun Line" &&
+              "Blue Eye Shuttle – Direct Shuttle from Saranda to Blue Eye"}
           </h1>
         </div>
 
