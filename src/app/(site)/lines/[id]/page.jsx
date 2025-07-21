@@ -15,11 +15,11 @@ export async function generateMetadata(props) {
     return {
       title:
         line.Name === "Culture Line"
-          ? "Gjirokaster & Blue Eye Shuttle Tour – Culture Line | KMG Shuttles"
+          ? "Gjirokaster Tour & Blue Eye Shuttle Tour – Culture Line | KMG Shuttles"
           : line.Name === "Sea Line"
           ? "Albanian Riviera Shuttle – Sea Line | KMG Shuttles"
           : line.Name === "Sun Line"
-          ? "Blue Eye Shuttle – Sun Line | Saranda to Blue Eye by KMG"
+          ? "Blue Eye Shuttle Tour – Sun Line | Tours From Saranda to Blue Eye by KMG"
           : `${line.Name} Shuttle Line | KMG Shuttles`,
       openGraph: {
         title: `${line.Name} – Shuttle Line | KMG`,
