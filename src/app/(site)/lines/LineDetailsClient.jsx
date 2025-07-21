@@ -473,7 +473,7 @@ export default function LineDetailsClient({ line }) {
                         const endDate = new Date(schedule.StartDateTime);
 
                         if (line.Name === "Culture Line") {
-                          endDate.setHours(17, 30, 0, 0);
+                          endDate.setHours(16, 45, 0, 0);
                         } else if (line.Name === "Sea Line") {
                           endDate.setHours(16, 30, 0, 0);
                         } else {

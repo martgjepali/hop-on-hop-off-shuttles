@@ -94,18 +94,29 @@ export default function Hero() {
         </div>
 
         {/* Right Column: Image */}
-        <div className="lg:w-1/2 opacity-0 animate-fade-up animate-fade-delay-4">
-          <Image
-            src="/images/fleet4.jpeg"
-            alt="KMG Team"
-            width={800}
-            height={600}
-            className="rounded-2xl shadow-xl object-cover w-full"
-          />
-          <p className="mt-4 text-sm text-gray-500 italic text-center lg:text-left">
-            Meet the passionate KMG team behind your unforgettable adventures.
-          </p>
-        </div>
+<div className="lg:w-1/2 opacity-0 animate-fade-up animate-fade-delay-4">
+  <div className="flex flex-row gap-6">
+    <Image
+      src="/images/background_img.jpg"
+      alt="KMG Shuttle"
+      width={600}
+      height={400}
+      className="rounded-2xl shadow-xl object-cover w-1/2"
+    />
+    <Image
+      src="/images/background_img_2.jpg"
+      alt="KMG Adventure"
+      width={600}
+      height={400}
+      className="rounded-2xl shadow-xl object-cover w-1/2"
+    />
+  </div>
+
+  <p className="mt-6 text-sm text-gray-500 italic text-center lg:text-left">
+    Discover our comfortable fleet and the stunning places we take you.
+  </p>
+</div>
+
       </div>
     </section>
   );
