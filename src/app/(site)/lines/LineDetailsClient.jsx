@@ -80,7 +80,7 @@ export default function LineDetailsClient({ line }) {
       case "Culture Line":
         return [3, 4, 8];
       case "Sea Line":
-        return [3, 1, 2];
+        return [0, 1, 2];
       default:
         return [0, 1, 2]; // fallback if name doesn't match
     }
@@ -472,9 +472,9 @@ export default function LineDetailsClient({ line }) {
                         const endDate = new Date(schedule.StartDateTime);
 
                         if (line.Name === "Culture Line") {
-                          endDate.setHours(16, 45, 0, 0);
+                          endDate.setHours(17, 0, 0, 0);
                         } else if (line.Name === "Sea Line") {
-                          endDate.setHours(16, 30, 0, 0);
+                          endDate.setHours(17, 0, 0, 0);
                         } else {
                           endDate.setHours(17, 0, 0, 0);
                         }
