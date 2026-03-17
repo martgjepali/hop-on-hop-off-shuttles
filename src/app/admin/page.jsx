@@ -50,12 +50,22 @@ export default function AdminDashboard() {
     }
   };
 
-  const seaLineBookings = bookings.filter((booking) =>
-    booking.LineType.toLowerCase().includes("sea")
-  );
-  const cultureLineBookings = bookings.filter((booking) =>
-    booking.LineType.toLowerCase().includes("culture")
-  );
+  const seaLineBookings = bookings.filter((booking) => {
+    const lt = booking.LineType.toLowerCase();
+    return lt.includes("sea") && lt.includes("saranda");
+  });
+  const cultureLineBookings = bookings.filter((booking) => {
+    const lt = booking.LineType.toLowerCase();
+    return lt.includes("culture") && lt.includes("saranda");
+  });
+  const ksamilSeaLineBookings = bookings.filter((booking) => {
+    const lt = booking.LineType.toLowerCase();
+    return lt.includes("sea") && lt.includes("ksamil");
+  });
+  const ksamilCultureLineBookings = bookings.filter((booking) => {
+    const lt = booking.LineType.toLowerCase();
+    return lt.includes("culture") && lt.includes("ksamil");
+  });
 
   const handleBookingsDeleted = (deletedIds) => {
     setBookings((prev) =>
@@ -79,6 +89,22 @@ export default function AdminDashboard() {
           cultureLineTable={
             <Table
               data={cultureLineBookings}
+              onAccept={handleAccept}
+              onDecline={handleDecline}
+              onBookingsDeleted={handleBookingsDeleted}
+            />
+          }
+          ksamilSeaLineTable={
+            <Table
+              data={ksamilSeaLineBookings}
+              onAccept={handleAccept}
+              onDecline={handleDecline}
+              onBookingsDeleted={handleBookingsDeleted}
+            />
+          }
+          ksamilCultureLineTable={
+            <Table
+              data={ksamilCultureLineBookings}
               onAccept={handleAccept}
               onDecline={handleDecline}
               onBookingsDeleted={handleBookingsDeleted}

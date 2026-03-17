@@ -51,7 +51,7 @@ export default function LineDetailsClient({ line }) {
   }
 
   const renderSection = (title, text) => {
-    const sentences = text
+    const sentences = (text || "")
       .split(/\.\s*/)
       .map((s) => s.trim())
       .filter(Boolean);

@@ -94,28 +94,53 @@ export default function Hero() {
         </div>
 
         {/* Right Column: Image */}
-<div className="lg:w-1/2 opacity-0 animate-fade-up animate-fade-delay-4">
-  <div className="flex flex-row gap-6">
-    <Image
-      src="/images/background_img.jpg"
-      alt="KMG Shuttle"
-      width={600}
-      height={400}
-      className="rounded-2xl shadow-xl object-cover w-1/2"
-    />
-    <Image
-      src="/images/background_img_2.jpg"
-      alt="KMG Adventure"
-      width={600}
-      height={400}
-      className="rounded-2xl shadow-xl object-cover w-1/2"
-    />
-  </div>
+        <div className="lg:w-1/2 opacity-0 animate-fade-up animate-fade-delay-4">
+          <div className="flex flex-row gap-6">
+            <Image
+              src="/images/background_img.jpg"
+              alt="KMG Shuttle"
+              width={600}
+              height={400}
+              className="rounded-2xl shadow-xl object-cover w-1/2"
+            />
+            <Image
+              src="/images/background_img_2.jpg"
+              alt="KMG Adventure"
+              width={600}
+              height={400}
+              className="rounded-2xl shadow-xl object-cover w-1/2"
+            />
+          </div>
 
-  <p className="mt-6 text-sm text-gray-500 italic text-center lg:text-left">
-    Discover our comfortable fleet and the stunning places we take you.
-  </p>
-</div>
+          {/* New team photos added below the existing images */}
+          <div className="mt-6 flex gap-4 justify-center lg:justify-start">
+            <Image
+              src="/images/team_photo_1.jpeg"
+              alt="Team photo 1"
+              width={240}
+              height={160}
+              className="rounded-2xl shadow-xl object-cover w-1/2 sm:w-1/3"
+            />
+            <Image
+              src="/images/team_photo_2.jpeg"
+              alt="Team photo 2"
+              width={240}
+              height={160}
+              className="rounded-2xl shadow-xl object-cover w-1/2 sm:w-1/3"
+            />
+            <Image
+              src="/images/team_photo_3.jpeg"
+              alt="Team photo 3"
+              width={240}
+              height={160}
+              className="rounded-2xl shadow-xl object-cover w-1/2 sm:w-1/3"
+            />
+          </div>
+
+          <p className="mt-6 text-sm text-gray-500 italic text-center lg:text-left">
+            Discover our comfortable fleet and the stunning places we take you.
+          </p>
+        </div>
 
       </div>
     </section>
