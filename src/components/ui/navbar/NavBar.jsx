@@ -15,9 +15,9 @@ export function CustomNavBar() {
     { name: "Home", url: "/", icon: Home },
     { name: "Lines", url: "/lines", icon: Binoculars },
     { name: "Fleet", url: "/fleet", icon: Car },
-    { name: "Schedules", url: "/time_table", icon: Timer },
+    // { name: "Schedules", url: "/time_table", icon: Timer },
     { name: "Contact", url: "/contact", icon: Contact },
-    { name: "AMF-PUB", url: "/menu", icon: Beer },
+    // { name: "AMF-PUB", url: "/menu", icon: Beer },
   ];
 
   return (
