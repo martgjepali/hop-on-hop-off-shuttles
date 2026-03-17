@@ -20,12 +20,13 @@ export default function LineDetailsClient({ line }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [sunLineTable, setSunLineTable] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     async function fetchSunLine() {
       try {
         const data = await getAllTimeTables();
-        const sunLine = data.find((t) => t.LineName === "Sun Line");
+        const sunLine = data.find((t) => t.LineName === "Sun Line (Start from Saranda)");
         if (sunLine) {
           setSunLineTable({
             ...sunLine,
@@ -33,14 +34,19 @@ export default function LineDetailsClient({ line }) {
           });
         }
       } catch (error) {
-        console.error("Failed to load Sun Line timetable:", error);
+        console.error("Failed to load Sun Line (Start from Saranda) timetable:", error);
       }
     }
 
-    if (line.Name === "Sun Line") {
+    if (line.Name === "Sun Line (Start from Saranda)") {
       fetchSunLine();
     }
   }, [line.Name]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowPopup(true), 1800);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!line) {
     return (
@@ -112,8 +118,8 @@ export default function LineDetailsClient({ line }) {
     });
 
   const handleBookingClick = () => {
-    if (line.Name === "Sun Line") {
-      setIsModalOpen(true);
+    if (line.Name === "Sun Line (Start from Saranda)") {
+      window.open("https://wa.me/+355684667466", "_blank");
     }
   };
 
@@ -167,7 +173,7 @@ export default function LineDetailsClient({ line }) {
               "Gjirokaster & Blue Eye Shuttle Tour – Culture Line"}
             {line.Name === "Sea Line" &&
               "Albanian Riviera Shuttle – Porto Palermo, Himare, Borsh"}
-            {line.Name === "Sun Line" &&
+            {line.Name === "Sun Line (Start from Saranda)" &&
               "Blue Eye Shuttle – Direct Shuttle from Saranda to Blue Eye"}
           </h1>
         </div>
@@ -190,7 +196,7 @@ export default function LineDetailsClient({ line }) {
               the Ionian coast.
             </p>
           )}
-          {line.Name === "Sun Line" && (
+          {line.Name === "Sun Line (Start from Saranda)" && (
             <p>
               The <strong>Blue Eye shuttle</strong> departs every 30 minutes
               from Saranda — a quick and affordable ride to one of Albania’s
@@ -229,7 +235,7 @@ export default function LineDetailsClient({ line }) {
               ))}
         </div>
 
-        {line.Name === "Sun Line" && sunLineTable && (
+        {line.Name === "Sun Line (Start from Saranda)" && sunLineTable && (
           <TimeTableCard data={sunLineTable} readOnly />
         )}
 
@@ -257,7 +263,7 @@ export default function LineDetailsClient({ line }) {
             {renderSection("Not Included", line.NotIncluded)}
             {renderSection("FAQ", line.Faq)}
 
-            {line.Name !== "Sun Line" && (
+            {line.Name !== "Sun Line (Start from Saranda)" && (
               <>
                 {/* Itinerary */}
                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -420,7 +426,7 @@ export default function LineDetailsClient({ line }) {
               </div>
             )}
 
-            {line.Name !== "Sun Line" && (
+            {line.Name !== "Sun Line (Start from Saranda)" && (
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
                   Select Your Schedule
@@ -531,7 +537,7 @@ export default function LineDetailsClient({ line }) {
             )}
 
             <div className="mt-10 pb-20">
-              {line.Name === "Sun Line" ? (
+              {line.Name === "Sun Line (Start from Saranda)" ? (
                 <button
                   onClick={handleBookingClick}
                   className="bg-[#00537E] w-full text-white rounded-lg shadow px-10 py-3 flex items-center justify-center hover:bg-[#F5A623] transition-colors"
@@ -550,6 +556,29 @@ export default function LineDetailsClient({ line }) {
               {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
             </div>
           </dl>
+        </div>
+      </div>
+
+      {/* WhatsApp Booking Popup */}
+      <div
+        className={`fixed bottom-6 right-6 z-50 transition-all duration-500 ease-out ${
+          showPopup
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-10 pointer-events-none"
+        }`}
+      >
+        <div className="relative bg-[#25D366] text-white rounded-2xl shadow-2xl px-5 py-4 max-w-[260px] flex items-center gap-3 animate-bounce-slow">
+          <button
+            onClick={() => setShowPopup(false)}
+            className="absolute top-1.5 right-2.5 text-white/70 hover:text-white text-xs leading-none"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+          <span className="text-3xl flex-shrink-0">💬</span>
+          <p className="font-semibold text-sm leading-snug pr-2">
+            Book Now with only one WhatsApp message!
+          </p>
         </div>
       </div>
     </section>

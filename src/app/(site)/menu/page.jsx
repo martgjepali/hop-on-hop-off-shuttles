@@ -1,18 +1,35 @@
-import Image from "next/image";
+const restaurants = [
+  {
+    name: "Restaurant Boulevard '90",
+    location: "Saranda Main Promenade",
+    description: "Mediteranean/Pizza Cuisine, Daily live music",
+    mapUrl: "https://share.google/vwDslaM3hgCKBHUkg",
+  },
+  {
+    name: "Pontil Restaurant",
+    location: "Saranda Main Promenade",
+    description: "Italian Cuisine, Daily live music",
+    mapUrl: "https://share.google/JZ0T6IpUQGoseX9IA",
+  },
+  {
+    name: "Allegro Restaurant",
+    location: "Saranda Main Promenade",
+    description: "Grill House",
+    mapUrl: "https://share.google/TVEuQ6IGbETr6mRab",
+  },
+  {
+    name: "BiT",
+    location: "Ksamil main road",
+    description:
+      "WOK, Sushi, Fried Sea Food, Waffles, Ice-cream, Fresh Juices, Cocktails.",
+    highlight: "ALL <6€",
+    mapUrl: null,
+  },
+];
 
 export default function MenuSection() {
-  const menuImages = [
-    "/images/menu/1.png",
-    "/images/menu/2.png",
-    "/images/menu/3.png",
-    "/images/menu/4.png",
-    "/images/menu/5.png",
-    "/images/menu/6.png",
-    "/images/menu/7.png",
-  ];
-
   return (
-    <section className="bg-black py-12 text-center relative">
+    <section className="bg-black py-12 px-4 relative">
       {/* Decorative blur background */}
       <div
         className="absolute inset-0 -z-10 transform-gpu overflow-hidden blur-3xl"
@@ -27,34 +44,34 @@ export default function MenuSection() {
         />
       </div>
 
-      {/* Main heading */}
-      <h1 className="text-3xl sm:text-4xl font-bold text-[#F5A623] mb-2">
-        AMF PUB - BEST Pre-Drinking place in Saranda!
+      {/* Section heading */}
+      <h1 className="text-3xl sm:text-4xl font-bold text-[#F5A623] mb-10 text-center">
+        Our Restaurants and other Services include:
       </h1>
 
-      {/* Subheading */}
-      <p className="text-white text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-        Daily music and Karaoke <br />
-        Albanian night once per week! <br />
-        <span className="text-[#F5A623] font-semibold">
-          ALL COCKTAILS, LONG DRINKS AND SHOTS 1€ - 5€
-        </span>
-      </p>
-
-      {/* Menu grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-        {menuImages.map((src, index) => (
+      {/* Restaurant cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        {restaurants.map((r) => (
           <div
-            key={index}
-            className="bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+            key={r.name}
+            className="bg-gray-900 border border-gray-700 rounded-xl p-6 flex flex-col gap-3 shadow-lg"
           >
-            <Image
-              src={src}
-              alt={`Menu page ${index + 1}`}
-              width={768}
-              height={1536}
-              className="w-full h-auto object-cover"
-            />
+            <h2 className="text-xl font-bold text-[#F5A623]">{r.name}</h2>
+            <p className="text-gray-400 text-sm font-medium">{r.location}</p>
+            <p className="text-white text-sm leading-relaxed">{r.description}</p>
+            {r.highlight && (
+              <p className="text-[#F5A623] font-semibold text-sm">{r.highlight}</p>
+            )}
+            {r.mapUrl && (
+              <a
+                href={r.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-auto inline-block text-center bg-[#F5A623] hover:bg-[#e09610] text-black font-semibold text-sm py-2 px-4 rounded-lg transition-colors"
+              >
+                View on Maps
+              </a>
+            )}
           </div>
         ))}
       </div>

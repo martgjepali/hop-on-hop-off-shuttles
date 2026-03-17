@@ -25,8 +25,11 @@ export default function ContactClient() {
           <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl mb-4">
             Get in Touch
           </h2>
-          <p className="mt-2 text-lg leading-8 text-gray-600 mb-12">
+          <p className="mt-2 text-lg leading-8 text-gray-600 mb-4">
             We&apos;d love to hear from you. Feel free to reach out anytime.
+          </p>
+          <p className="text-2xl font-bold text-amber-600 mb-12">
+            WhatsApp us and BOOK instantly with only a message!
           </p>
         </div>
 

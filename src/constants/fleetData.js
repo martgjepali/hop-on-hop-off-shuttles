@@ -1,22 +1,22 @@
 export const fleetData = [
   {
     image: "/images/fleet1.jpg",
-    name: "Van 1",
+    name: "Honda Odyssey",
     role: "Luxury Minivan",
   },
   {
     image: "/images/fleet2.jpg",
-    name: "Van 2",
+    name: "Mercedes Benz Sprinter",
     role: "Group Shuttle",
   },
   {
     image: "/images/fleet3.jpg",
-    name: "Van 3",
+    name: "Mercedes Benz Sprinter",
     role: "Compact Transport",
   },
   {
     image: "/images/fleet4.jpg",
-    name: "Van 4",
+    name: "Mercedes Benz Vito",
     role: "Compact Transport",
   },
 
