@@ -72,17 +72,43 @@ export default function ContactClient() {
           </div>
         </div>
 
-        {/* Embedded Map */}
-        <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-16">
-          <iframe
-            src="https://www.google.com/maps?q=39.872805,20.014343&hl=en&z=15&output=embed"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+        {/* Embedded Maps */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 px-1">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#F5A623] shrink-0" />
+              <span className="text-sm font-semibold text-gray-700">Saranda Office</span>
+            </div>
+            <div className="w-full h-64 sm:h-80 rounded-2xl overflow-hidden shadow-lg ring-1 ring-black/5">
+              <iframe
+                src="https://www.google.com/maps?q=39.872805,20.014343&hl=en&z=15&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 px-1">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#00537E] shrink-0" />
+              <span className="text-sm font-semibold text-gray-700">Ksamil Office</span>
+            </div>
+            <div className="w-full h-64 sm:h-80 rounded-2xl overflow-hidden shadow-lg ring-1 ring-black/5">
+              <iframe
+                src="https://www.google.com/maps?q=39.7706,20.0044&hl=en&z=15&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </div>
         </div>
       </section>
     </div>
