@@ -13,52 +13,48 @@ export default function Testimonials() {
       prev === 0 ? testimonials.length - 1 : prev - 1
     );
 
-  const currentTestimonial = testimonials[currentIndex];
+  const current = testimonials[currentIndex];
 
   return (
-    <section className="relative isolate overflow-hidden bg-gradient-to-r from-[#F5A623] to-[#FFDC91] px-6 py-24 sm:py-32 lg:px-8">
-      {/* Decorative Background Gradients */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,#FFDC91,#F5A623)] opacity-20" />
-      <div className="absolute inset-y-0 right-1/2 -z-10 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] bg-gradient-to-r from-[#F5A623] to-[#FFDC91] shadow-xl ring-1 ring-[#F5A623]/10 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center" />
-
-      {/* Section Title */}
-      <div className="text-center">
-        <h2 className="text-4xl sm:text-5xl font-bold text-gray-800 tracking-tight">
-          Testimonials
-        </h2>
-      </div>
-
-      {/* Testimonial Content */}
-      <div className="mx-auto max-w-2xl lg:max-w-4xl mt-12">
-        <figure>
-          <blockquote className="text-center text-lg sm:text-2xl font-medium text-gray-800 italic">
-            <p>“{currentTestimonial.quote}”</p>
-          </blockquote>
-
-          <figcaption className="mt-10 flex flex-col items-center text-center">
-            <div className="mt-3 font-semibold text-gray-900 text-base">
-              {currentTestimonial.name}
-            </div>
-          </figcaption>
-
-          {/* Navigation Buttons */}
-          <div className="mt-8 flex justify-center gap-4">
-            <button
-              onClick={prevTestimonial}
-              aria-label="Previous testimonial"
-              className="rounded-md bg-[#00537E] px-4 py-2 text-sm font-medium text-white hover:bg-[#F5A623] hover:text-gray-800 transition"
-            >
-              Previous
-            </button>
-            <button
-              onClick={nextTestimonial}
-              aria-label="Next testimonial"
-              className="rounded-md bg-[#00537E] px-4 py-2 text-sm font-medium text-white hover:bg-[#F5A623] hover:text-gray-800 transition"
-            >
-              Next
-            </button>
+    <section className="py-14 px-4 sm:px-8 bg-gradient-to-br from-[#fff8ee] to-[#fffdf6]">
+      <div className="max-w-2xl mx-auto">
+        <div className="text-center mb-8">
+          <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#F5A623] mb-2">
+            What people say
+          </span>
+          <h2 className="text-2xl font-bold text-gray-900">Testimonials</h2>
+        </div>
+        <div className="relative bg-white rounded-2xl shadow-lg border border-gray-100 px-6 pt-8 pb-6">
+          <div className="flex justify-center gap-0.5 mb-4">
+            {[...Array(5)].map((_, i) => (
+              <svg key={i} className="w-4 h-4 text-[#F5A623]" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118L10 15.347l-3.95 2.878c-.784.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.064 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69L9.049 2.927z" />
+              </svg>
+            ))}
           </div>
-        </figure>
+          <blockquote className="text-center text-gray-700 text-sm sm:text-base leading-relaxed italic">
+            &ldquo;{current.quote}&rdquo;
+          </blockquote>
+          <div className="mt-5 flex items-center justify-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-[#00537E] flex items-center justify-center text-white text-xs font-bold shrink-0">
+              {current.name.charAt(0)}
+            </div>
+            <span className="font-semibold text-gray-900 text-sm">{current.name}</span>
+          </div>
+          <div className="mt-6 flex items-center justify-center gap-4">
+            <button onClick={prevTestimonial} aria-label="Previous" className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#00537E] hover:text-white hover:border-[#00537E] transition-all">&#8249;</button>
+            <div className="flex gap-1.5">
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentIndex(i)}
+                  className={`rounded-full transition-all ${i === currentIndex ? "w-5 h-2 bg-[#F5A623]" : "w-2 h-2 bg-gray-300 hover:bg-gray-400"}`}
+                />
+              ))}
+            </div>
+            <button onClick={nextTestimonial} aria-label="Next" className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#00537E] hover:text-white hover:border-[#00537E] transition-all">&#8250;</button>
+          </div>
+        </div>
       </div>
     </section>
   );

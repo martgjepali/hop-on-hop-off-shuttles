@@ -51,16 +51,18 @@ export default function OurFleet() {
           return (
             <div
               key={index}
-              className={`flex flex-col items-center text-center bg-[#00537E] p-5 rounded-xl shadow-lg text-white opacity-0 animate-fade-up ${delayClass} transition-colors duration-300 hover:bg-[#F5A623]`}
+              className={`flex flex-col items-center text-center bg-[#00537E] p-3 rounded-xl shadow-lg text-white opacity-0 animate-fade-up ${delayClass} transition-colors duration-300 hover:bg-[#F5A623]`}
             >
               {vehicle.image && (
-                <Image
-                  src={vehicle.image}
-                  alt={vehicle.name}
-                  width={400}
-                  height={240}
-                  className="w-full h-60 object-cover rounded-md"
-                />
+                <div className="w-full bg-white rounded-md overflow-hidden">
+                  <Image
+                    src={vehicle.image}
+                    alt={vehicle.name}
+                    width={400}
+                    height={240}
+                    className="w-full h-52 object-contain"
+                  />
+                </div>
               )}
               <div className="mt-4">
                 <h3 className="text-xl font-semibold">{vehicle.name}</h3>

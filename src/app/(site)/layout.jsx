@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { CustomNavBar } from "@/components/ui/navbar/NavBar";
 import Footer from "@/components/ui/footer/Footer";
 import WhatsAppButton from "@/components/ui/WhatsAppButton/WhatsAppButton";
+import LoadingScreen from "@/components/ui/LoadingScreen/LoadingScreen";
 import { Toaster } from "react-hot-toast";
 
 import "../globals.css";
@@ -63,7 +64,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col`}
       >
         <Toaster position="top-center" toastOptions={{ duration: 5000 }} />
-
+        <LoadingScreen />
         <CustomNavBar />
         {/* Main Content */}
         <main className="flex-grow pt-16 sm:pt-20 px-4 sm:px-6">
