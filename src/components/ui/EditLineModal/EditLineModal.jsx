@@ -18,6 +18,8 @@ export default function EditLineModal({ line, onClose, onUpdated }) {
     Faq: line.Faq || "",
     Price: line.Price || "",
   });
+  const [newImages, setNewImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -26,17 +28,31 @@ export default function EditLineModal({ line, onClose, onUpdated }) {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setNewImages(files);
+    setImagePreviews(files.map((file) => URL.createObjectURL(file)));
+  };
+
+  const handleRemovePreview = (index) => {
+    setNewImages((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async () => {
     const payload = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       payload.append(key, value);
     });
+    newImages.forEach((file) => {
+      payload.append("images", file);
+    });
 
     try {
       await updateLine(line.LineID, payload);
       toast.success("Line updated!");
-      onUpdated(); // trigger refresh
-      onClose();   // close modal
+      onUpdated();
+      onClose();
     } catch (error) {
       toast.error("Failed to update line");
       console.error(error);
@@ -61,6 +77,38 @@ export default function EditLineModal({ line, onClose, onUpdated }) {
               />
             </div>
           ))}
+
+          {/* Image Upload — spans both columns */}
+          <div className="flex flex-col sm:col-span-2">
+            <label className="font-medium text-sm mb-1">Upload New Images</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageChange}
+              className="border rounded px-2 py-1 text-sm file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-sky-100 file:text-sky-700 hover:file:bg-sky-200"
+            />
+            {imagePreviews.length > 0 && (
+              <div className="flex flex-wrap gap-3 mt-3">
+                {imagePreviews.map((src, i) => (
+                  <div key={i} className="relative w-20 h-20">
+                    <img
+                      src={src}
+                      alt={`preview-${i}`}
+                      className="w-full h-full object-cover rounded border"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePreview(i)}
+                      className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-red-600"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex justify-end gap-3">

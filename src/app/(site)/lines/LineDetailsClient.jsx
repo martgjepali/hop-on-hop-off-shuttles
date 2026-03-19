@@ -22,6 +22,8 @@ export default function LineDetailsClient({ line }) {
   const [sunLineTable, setSunLineTable] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
 
+  const lineName = (line?.Name || "").trim();
+
   useEffect(() => {
     async function fetchSunLine() {
       try {
@@ -38,10 +40,10 @@ export default function LineDetailsClient({ line }) {
       }
     }
 
-    if (line.Name === "Sun Line (Start from Saranda)") {
+    if (lineName === "Sun Line (Start from Saranda)") {
       fetchSunLine();
     }
-  }, [line.Name]);
+  }, [lineName]);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowPopup(true), 1800);
@@ -92,7 +94,7 @@ export default function LineDetailsClient({ line }) {
     }
   };
 
-  const selectedImageIndices = getImageIndices(line.Name);
+  const selectedImageIndices = getImageIndices(lineName);
 
   const now = new Date();
 
@@ -118,7 +120,7 @@ export default function LineDetailsClient({ line }) {
     });
 
   const handleBookingClick = () => {
-    if (line.Name === "Sun Line (Start from Saranda)") {
+    if (lineName === "Sun Line (Start from Saranda)" || lineName === "City Line") {
       window.open("https://wa.me/+355684667466", "_blank");
     }
   };
@@ -136,13 +138,13 @@ export default function LineDetailsClient({ line }) {
   };
 
   const endDate = selectedSchedule
-    ? getEndDateFromLineName(line.Name, selectedSchedule.StartDateTime)
+    ? getEndDateFromLineName(lineName, selectedSchedule.StartDateTime)
     : new Date();
 
   const reservationUrl =
     "/reservation?" +
     new URLSearchParams({
-      LineType: line.Name,
+      LineType: lineName,
       LineID: line.LineID.toString(),
       ScheduleID: selectedSchedule
         ? selectedSchedule.ScheduleID.toString()
@@ -169,18 +171,20 @@ export default function LineDetailsClient({ line }) {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-up">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-[#F5A623]">
-            {line.Name === "Culture Line" &&
+            {lineName === "Culture Line" &&
               "Gjirokaster & Blue Eye Shuttle Tour – Culture Line"}
-            {line.Name === "Sea Line" &&
+            {lineName === "Sea Line" &&
               "Albanian Riviera Shuttle – Porto Palermo, Himare, Borsh"}
-            {line.Name === "Sun Line (Start from Saranda)" &&
+            {lineName === "Sun Line (Start from Saranda)" &&
               "Blue Eye Shuttle – Direct Shuttle from Saranda to Blue Eye"}
+            {lineName === "City Line" &&
+              "City Line – Ksamil to Saranda Evening Shuttle"}
           </h1>
         </div>
 
         <div className="mb-6 text-base leading-relaxed text-gray-700">
           <p className="mb-2 italic">{line.ShortDescription}</p>
-          {line.Name === "Culture Line" && (
+          {lineName === "Culture Line" && (
             <p>
               This guided <strong>shuttle tour from Saranda</strong> visits
               <strong> Gjirokaster, Blue Eye</strong>, Lekuresi Castle, and
@@ -188,7 +192,7 @@ export default function LineDetailsClient({ line }) {
               and natural highlights in a single day.
             </p>
           )}
-          {line.Name === "Sea Line" && (
+          {lineName === "Sea Line" && (
             <p>
               Our <strong>Albanian Riviera shuttle</strong> connects Saranda to
               <strong> Porto Palermo Castle, Himare</strong>, and{" "}
@@ -196,14 +200,19 @@ export default function LineDetailsClient({ line }) {
               the Ionian coast.
             </p>
           )}
-          {line.Name === "Sun Line (Start from Saranda)" && (
+          {lineName === "Sun Line (Start from Saranda)" && (
             <p>
               The <strong>Blue Eye shuttle</strong> departs every 30 minutes
               from Saranda — a quick and affordable ride to one of Albania’s
               most iconic natural springs.
             </p>
-          )}
-        </div>
+          )}          {lineName === "City Line" && (
+            <p>
+              Hop on in Ksamil and enjoy <strong>Saranda's evening and night life</strong>.
+              We depart at 19:45 and bring you back at 23:45 — sit back and let us
+              handle the ride while you enjoy the promenade.
+            </p>
+          )}        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {line.Images && line.Images.length > 0
@@ -235,7 +244,7 @@ export default function LineDetailsClient({ line }) {
               ))}
         </div>
 
-        {line.Name === "Sun Line (Start from Saranda)" && sunLineTable && (
+        {lineName === "Sun Line (Start from Saranda)" && sunLineTable && (
           <TimeTableCard data={sunLineTable} readOnly />
         )}
 
@@ -263,7 +272,7 @@ export default function LineDetailsClient({ line }) {
             {renderSection("Not Included", line.NotIncluded)}
             {renderSection("FAQ", line.Faq)}
 
-            {line.Name !== "Sun Line (Start from Saranda)" && (
+            {lineName !== "Sun Line (Start from Saranda)" && lineName !== "City Line" && (
               <>
                 {/* Itinerary */}
                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -409,7 +418,7 @@ export default function LineDetailsClient({ line }) {
                 </div>
               </>
             )}
-            {line.Name == "Culture Line" && (
+            {lineName === "Culture Line" && (
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-sm font-medium text-gray-900">
                   Line Description
@@ -426,7 +435,7 @@ export default function LineDetailsClient({ line }) {
               </div>
             )}
 
-            {line.Name !== "Sun Line (Start from Saranda)" && (
+            {lineName !== "Sun Line (Start from Saranda)" && lineName !== "City Line" && (
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
                   Select Your Schedule
@@ -537,7 +546,7 @@ export default function LineDetailsClient({ line }) {
             )}
 
             <div className="mt-10 pb-20">
-              {line.Name === "Sun Line (Start from Saranda)" ? (
+              {lineName === "Sun Line (Start from Saranda)" || lineName === "City Line" ? (
                 <button
                   onClick={handleBookingClick}
                   className="bg-[#00537E] w-full text-white rounded-lg shadow px-10 py-3 flex items-center justify-center hover:bg-[#F5A623] transition-colors"
@@ -561,7 +570,7 @@ export default function LineDetailsClient({ line }) {
 
       {/* WhatsApp Booking Popup */}
       <div
-        className={`fixed bottom-6 right-6 z-50 transition-all duration-500 ease-out ${
+        className={`fixed bottom-24 sm:bottom-6 right-6 z-50 transition-all duration-500 ease-out ${
           showPopup
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-10 pointer-events-none"
