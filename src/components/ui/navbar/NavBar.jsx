@@ -16,8 +16,8 @@ export function CustomNavBar() {
     { name: "Lines", url: "/lines", icon: Binoculars },
     { name: "Fleet", url: "/fleet", icon: Car },
     // { name: "Schedules", url: "/time_table", icon: Timer },
-    { name: "Contact", url: "/contact", icon: Contact },
     { name: "Our Restaurants", url: "/menu", icon: Beer },
+    { name: "Contact", url: "/contact", icon: Contact },
   ];
 
   return (
