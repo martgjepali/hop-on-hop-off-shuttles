@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { testimonials } from "@/constants/testimonials";
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const touchStartX = useRef(null);
 
   const nextTestimonial = () =>
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
@@ -12,6 +13,19 @@ export default function Testimonials() {
     setCurrentIndex((prev) =>
       prev === 0 ? testimonials.length - 1 : prev - 1
     );
+
+  function handleTouchStart(e) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+
+  function handleTouchEnd(e) {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) < 30) return;
+    if (diff > 0) nextTestimonial();
+    else prevTestimonial();
+    touchStartX.current = null;
+  }
 
   const current = testimonials[currentIndex];
 
@@ -24,7 +38,10 @@ export default function Testimonials() {
           </span>
           <h2 className="text-2xl font-bold text-gray-900">Testimonials</h2>
         </div>
-        <div className="relative bg-white rounded-2xl shadow-lg border border-gray-100 px-6 pt-8 pb-6">
+        <div className="relative bg-white rounded-2xl shadow-lg border border-gray-100 px-6 pt-8 pb-6"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <div className="flex justify-center gap-0.5 mb-4">
             {[...Array(5)].map((_, i) => (
               <svg key={i} className="w-4 h-4 text-[#F5A623]" fill="currentColor" viewBox="0 0 20 20">

@@ -11,8 +11,8 @@ const stats = [
 ];
 
 const carouselImages = [
-  { src: "/images/background_img.jpg", alt: "KMG Shuttle" },
   { src: "/images/background_img_2.jpg", alt: "KMG Adventure" },
+  { src: "/images/background_img.jpg", alt: "KMG Shuttle" },
   { src: "/images/team_photo_1.jpeg", alt: "Team 1" },
   { src: "/images/team_photo_2.jpeg", alt: "Team 2" },
   { src: "/images/team_photo_3.jpeg", alt: "Team 3" },
@@ -143,7 +143,7 @@ export default function Hero() {
                   <Image src={img.src} alt={img.alt} fill className="object-cover" />
                 </div>
               ))}
-              {activeSlide === 1 && (
+              {activeSlide === 0 && (
                 <div className="absolute bottom-3 left-3 right-3 z-20 bg-white/80 backdrop-blur-sm rounded-lg px-2 py-1 text-xs font-semibold text-[#00537E] shadow">
                   🚌 Departing every 30 min
                 </div>
