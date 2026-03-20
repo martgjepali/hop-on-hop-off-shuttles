@@ -51,21 +51,30 @@ export default function LinesPageClient() {
   }
 
   return (
-    <main className="min-h-screen py-10 sm:py-35">
-      <div
-        className="absolute inset-0 -z-10 transform-gpu overflow-hidden blur-3xl"
-        aria-hidden="true"
-      >
-        <div
-          className="relative left-1/2 top-[-10%] w-[40rem] sm:w-[60rem] aspect-[1155/678] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#F5A623] to-[#FFDC91] opacity-40"
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-        />
+    <main className="relative min-h-screen py-10 sm:py-28 px-4 sm:px-6 lg:px-8">
+
+      {/* Background blobs */}
+      <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-[#F5A623] opacity-10 blur-3xl" />
+        <div className="absolute top-1/2 -right-32 w-80 h-80 rounded-full bg-[#00537E] opacity-10 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full bg-[#FFDC91] opacity-20 blur-2xl" />
       </div>
-      <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-[#F5A623] mb-8">Our Lines</h1>
+
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#F5A623] mb-3">
+            Explore Albania
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
+            Our <span className="text-[#00537E]">Lines</span>
+          </h1>
+          <p className="mt-4 text-base sm:text-lg text-gray-500 max-w-xl mx-auto leading-relaxed">
+            Choose your route and hop on board. Comfortable shuttles departing daily from Saranda and Ksamil.
+          </p>
+        </div>
+
+        {/* Cards grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {lines.map((line, index) => (
             <LineCard

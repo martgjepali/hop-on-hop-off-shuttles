@@ -99,7 +99,7 @@ export default function ContactClient() {
             </div>
             <div className="w-full h-64 sm:h-80 rounded-2xl overflow-hidden shadow-lg ring-1 ring-black/5">
               <iframe
-                src="https://www.google.com/maps?q=39.7706,20.0044&hl=en&z=15&output=embed"
+                src="https://www.google.com/maps?q=39.7678901,20.0027789&hl=en&z=15&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
