@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const stats = [
-  { value: "500+", label: "Happy Travelers" },
+  { value: "5000+", label: "Happy Travelers" },
   { value: "4", label: "Unique Routes" },
   { value: "5★", label: "Avg. Rating" },
 ];
