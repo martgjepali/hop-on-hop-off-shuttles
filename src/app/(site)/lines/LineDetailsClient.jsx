@@ -263,7 +263,7 @@ export default function LineDetailsClient({ line }) {
         </div>
 
         {/* Itinerary block */}
-        {lineName !== "Sun Line (Start from Saranda)" && lineName !== "City Line" && (
+        {lineName !== "Sun Line (Start from Saranda)" && (
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5 mb-6 space-y-5">
 
             {/* Itinerary */}
