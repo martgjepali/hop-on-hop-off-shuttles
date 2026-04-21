@@ -223,12 +223,6 @@ export default function LineDetailsClient({ line }) {
               ))}
         </div>
 
-        {lineName === "Sun Line (Start from Saranda)" && sunLineTable && (
-          <div className="mb-8">
-            <TimeTableCard data={sunLineTable} readOnly />
-          </div>
-        )}
-
         {/* Info cards grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           {/* Price */}
@@ -430,6 +424,12 @@ export default function LineDetailsClient({ line }) {
           )}
           {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
         </div>
+
+        {lineName === "Sun Line (Start from Saranda)" && sunLineTable && (
+          <div className="mb-8">
+            <TimeTableCard data={sunLineTable} readOnly />
+          </div>
+        )}
       </div>
 
       {/* WhatsApp Booking Popup */}
