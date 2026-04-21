@@ -4,7 +4,7 @@ const TimeTableCard = ({ data, onUpdate, readOnly = false }) => {
   const [isEditing, setIsEditing] = useState(!readOnly);
   const [draftRows, setDraftRows] = useState(data.table);
 
-  const isSunLine = data.LineName === "Sun Line";
+  const isSunLine = data.LineName === "Sun Line" || data.LineName === "Sun Line (Start from Saranda)";
   let headers = Object.keys(draftRows[0] ?? {});
 
   // Remove SarandaStart and BlueEyeStart for non-Sun lines

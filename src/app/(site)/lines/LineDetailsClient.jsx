@@ -6,6 +6,7 @@ import Link from "next/link";
 import Modal from "@/components/ui/modal/SeaLineModal";
 import { getAllTimeTables } from "@/services/timeTableService";
 import TimeTableCard from "@/components/timetable_card/TimeTableCard";
+import { timetableData } from "@/constants/timeTableData";
 
 import {
   Listbox,
@@ -31,9 +32,14 @@ export default function LineDetailsClient({ line }) {
         const sunLine = data.find((t) => t.LineName === "Sun Line (Start from Saranda)");
         if (sunLine) {
           setSunLineTable({ ...sunLine, table: sunLine.rows });
+        } else {
+          const fallback = timetableData.find((t) => t.LineName === "Sun Line (Start from Saranda)");
+          if (fallback) setSunLineTable(fallback);
         }
       } catch (error) {
         console.error("Failed to load Sun Line timetable:", error);
+        const fallback = timetableData.find((t) => t.LineName === "Sun Line (Start from Saranda)");
+        if (fallback) setSunLineTable(fallback);
       }
     }
     if (lineName === "Sun Line (Start from Saranda)") fetchSunLine();
