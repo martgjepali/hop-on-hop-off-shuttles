@@ -3,9 +3,9 @@ export const timetableData = [
     LineName: "Sun Line (Start from Saranda)",
     Route: "Saranda → Blue Eye → Saranda",
     table: [
-      { SarandaStart: "09:00", BlueEyeStart: "12:00" },
-      { SarandaStart: "10:30", BlueEyeStart: "13:30" },
-      { SarandaStart: "13:00", BlueEyeStart: "16:00" },
+      { SarandaStart: "10:00", BlueEyeStart: "12:30" },
+      { SarandaStart: "11:00", BlueEyeStart: "13:30" },
+      { SarandaStart: "12:00", BlueEyeStart: "14:30" },
     ],
   },
   {
